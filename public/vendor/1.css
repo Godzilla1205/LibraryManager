@@ -1,0 +1,70 @@
+.login-block{
+  background: linear-gradient(to bottom, #FFB88C, #DE6262);
+  float:left;
+  width: 100%;
+  padding: 106px 0;
+}
+.banner-sec{
+  background-color: #f4bb2e;
+  background-size:cover;
+  min-height: 445px;
+  border-radius: 0 10px 10px 0;
+  padding:0;
+}
+.container{
+  background:#fff;
+  border-radius: 10px;
+  box-shadow:15px 20px 0px rgba(0,0,0,0.1);
+}
+.login-sec{
+  padding: 50px 30px; 
+  position:relative;
+}
+.login-sec h2{
+  margin-bottom:30px; 
+  font-weight:800; 
+  font-size:30px; 
+  color: #DE6262;
+}
+.login-sec h2:after{
+  content:" ";
+  width:100px;
+  height:5px; 
+  background:#FEB58A; 
+  display:block;
+  margin-top:20px; 
+  border-radius:3px;
+  margin-left:auto;
+  margin-right:auto
+}
+.btn-login{
+  background: #DE6262;
+  color:#fff; 
+  font-weight:600;
+}
+
+img.d-block.img-fluid {
+    margin-top: 19px;
+}
+@media (min-width: 1100px){
+  .login-block .container {
+    max-width: 900px;
+}
+}
+
+.red #userName,.red #passWord {
+    border-color: red;
+}
+
+.fail #userName,.fail #passWord {
+    animation: animate1 0.2s forwards;
+}
+
+
+@-webkit-keyframes animate1 {
+  0% {transform: translateX(0px) translateY(0px);}
+  20% {transform: translateX(-5px) translateY(0px);}
+  50% {transform: translateX(0px) translateY(0px);}
+  75% {transform: translateX(5px) translateY(0px);}
+  100% {transform: translateX(0px) translateY(0px);}
+}
