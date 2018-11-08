@@ -47,7 +47,7 @@ sl-active
 					</div>
 				</div>
 			</div>
-			<form action="{route('post.manager.book.add')}}" method="POST" class="form-horizontal" role="form">
+			<form action="{{route('post.manager.borrowBook')}}" method="POST" class="form-horizontal" role="form">
 				@method('post')
 				@csrf
 				<div id="form-header" class="row form-border">
@@ -55,13 +55,14 @@ sl-active
 						<div class="form-group disabledbutton">
 							<label class="col-sm-12 control-label" for="">Mã Phiếu Mượn</label>
 							<div class="col-sm-12">
-								<input id="codeBorrow" class="form-control" name="maPhieuMuon" type="text" value="{{$borrowBooks[count($borrowBooks)-1]['soPhieuMuon']+1}}">
+								<input id="codeBorrow" class="form-control" name="soPhieuMuon" type="text" value="@if(isset($borrowBooks[count($borrowBooks)-1]['soPhieuMuon'])){{$borrowBooks[count($borrowBooks)-1]['soPhieuMuon']+1}}@else{{1}}@endif">
 							</div>
 						</div> <!-- end form-group -->
 						<div class="form-group">
 							<label class="col-sm-12 control-label" for="">Mã Độc Giả</label>
 							<div class="col-sm-12">
-								<input class="form-control" id="idReader" name="maSoDG" value="DG001" type="text">
+								<input class="form-control" id="idReader" value="DG001" type="text">
+								<input type="hidden" id="maSoDG" name="maSoDG">
 							</div>
 						</div> <!-- end form-group --> 
 					</div>
@@ -69,7 +70,7 @@ sl-active
 						<div class="form-group">
 							<label class="control-label">Nhân Viên</label>
 							<div class="col-sm-12">
-								<select class="form-control" name="idNV">
+								<select class="form-control" name="maSoNV">
 									@foreach($employeess as $employees)
 									<option value="{{$employees['id']}}">
 									{{$employees['hoTenNV']}}</option>
@@ -102,33 +103,33 @@ sl-active
 										<th scope="col">Loại Sách</th>
 										<th scope="col">Tác Giả</th>
 										<th scope="col">NXB</th>
-
+										<th scope="col">Còn</th>
 									</tr>
 								</thead>
-								<tbody id="tbodyBooks">
+								<tbody id="tbodyBooks" class="cursorPointer">
 									<!-- insert data -->
 								</tbody>
 							</table>
 						</div>
 					</div>
 					<div class="col-sm-4">
-						<div class="form-group">
+						<div class="form-group disabledbutton">
 							<label class="col-sm-12 control-label" for="">Mã Phiếu Mượn</label>
 							<div class="col-sm-12">
-								<input class="form-control" name="giaTien" type="text">
+								<input class="form-control" name="soPhieuMuonEnd" id="codeBorrowEnd" type="text">
 							</div>
 						</div> <!-- end form-group -->
 						<div class="form-group">
 							<label class="col-sm-12 control-label" for="">Mã Sách</label>
 							<div class="col-sm-12">
-								<input class="form-control" name="giaTien" type="text">
+								<input class="form-control" id="codeBook" type="text">
 							</div>
 						</div> <!-- end form-group -->
 						<div class="form-group float-right">
 							<div class="col-sm-12">
-								<a href="" class="btn btn-primary">+</a>
-								<a href="" class="btn btn-primary">-</a>
-								<a href="" class="btn btn-primary">x</a>
+								<a id="addBook" href="javascript:void(0)" class="btn btn-secondary waves-effect waves-light disabledbutton"><i class="fa fa-plus"></i></a>
+								<a id="editBook" href="javascript:void(0)" class="btn btn-secondary waves-effect waves-light disabledbutton"><i class="fa fa-minus"></i></a>
+								<a id="deleteBook" href="javascript:void(0)" class="btn btn-secondary waves-effect waves-light disabledbutton"><i class="fa fa-times"></i></a>
 							</div>
 						</div>
 						<div class="form-group">
@@ -139,11 +140,12 @@ sl-active
 										<!-- insert listSelects -->
 									</ul>
 								</div>
+								<input type="hidden" id="Book_ids" name="Book_ids" class="btn btn-primary">
 							</div>
 						</div>
 						<div class="form-group">
 							<label class="col-sm-12 control-label" for="">Hạn Trả</label>
-							<div class="col-sm-12"><input id="termBorrow" class="form-control datepicker-here" name="ngaySinhNV" type="text" data-language='en'></div>
+							<div class="col-sm-12"><input id="termBorrow" class="form-control datepicker-here" name="hanTra" type="text" data-language='en'></div>
 						</div> <!-- end form-group -->
 						<div class="form-group float-right">
 							<div class="col-sm-12">
@@ -173,6 +175,7 @@ sl-active
 	var termBorrow = document.getElementById('termBorrow');
 	var idReader = document.getElementById('idReader');
 	var listSelects = document.getElementById('listSelects');
+	var Book_ids = document.getElementById('Book_ids');
 	
 	// get Date
 	var date = new Date();
@@ -190,7 +193,7 @@ sl-active
 	//console.log(books[books.length-1]);
 	
 	create.onclick = function(){
-		if(checkReader(idReader)){
+		if(checkReader(idReader.value)){
 			var onDisabled = formHeader;
 			var offDisabled = formContent;
 			onOffDisabled(onDisabled, offDisabled);	
@@ -198,24 +201,91 @@ sl-active
 			var htmlSL = '';
 			var numberListSelect = 0;
 			var rowBooks = document.querySelectorAll('#tbodyBooks tr');
+			var codeBorrowEnd = document.getElementById('codeBorrowEnd');
+			var codeBook = document.getElementById('codeBook');
+			codeBorrowEnd.value = codeBorrow.value;
+			var giveBook;
 			for (var i = 0; i < rowBooks.length; i++) {
 				var rowBook = rowBooks[i];
-				rowBook.onclick = function() {		
-					numberListSelect = listSelects.childElementCount;
-					if(numberListSelect<5){
-						htmlSL += '<li class="nav-item">';
-						htmlSL += '<a class="nav-link" href="">';
-						htmlSL += '<span>'+this.cells[1].innerText+'</span>';
-						htmlSL += '</a>';
-						htmlSL += '</li>';
-						listSelects.innerHTML = htmlSL;
-					}else {
+				rowBook.onclick = function() {	
+					giveBook = [
+					this.firstChild.defaultValue,
+					this.cells[0].innerText,
+					this.cells[1].innerText,
+					this.cells[5].innerText
+					];
+					codeBook.value = giveBook[1];
+					onOffButton("add");
+					// Kiểm tra độc giả mượn trước đó trưa
+					// kiểm tra độc giả có đủ số lần mượn sách không
 
-					}
-					
+
+
+
 				}
-				
+
 			}
+
+
+			codeBook.onkeyup = function() {
+				onOffButton("add");
+			}
+
+			var BookObjects = [];
+			var addBook = document.getElementById('addBook');
+			var deleteBook = document.getElementById('deleteBook');
+			var editBook = document.getElementById('editBook');
+
+			addBook.onclick = function() {
+				var numberBook = giveBook[3];
+				var nameBook = giveBook[2];
+				if(numberBook>0){
+					if(checkObject(BookObjects, giveBook)){
+						numberListSelect = listSelects.childElementCount;
+						if(numberListSelect<5){
+							htmlSL += '<li class="nav-item cursorPointer">';
+							htmlSL += '<a class="nav-link" href="javascript:void(0)">';
+							htmlSL += '<span>'+ codeBook.value + " | " +  nameBook + '</span>';
+							htmlSL += '</a>';
+							htmlSL += '</li>';
+							listSelects.innerHTML = htmlSL;
+							BookObjects.push(giveBook);
+							createSelectItem();
+							addBook_ids(BookObjects);
+							codeBook.value = "";
+							onOffButton("add");
+						}else {
+							alert('Số lượng sách mượn không được quá 5 !!!');
+						}
+					}else {
+						alert('Sách đã được chọn rồi!!!');
+					}
+
+				}else {
+					alert('Số lượng sách đã hết không thể mượn thêm !!!');
+				}			
+			}
+			
+			
+			deleteBook.onclick = function() {
+				if(codeBook.value !== ""){
+					//if(BookObjects.isArray)
+					if(BookObjects == false){
+						console.log('un');
+					}else {console.log('no')}
+					//codeBook.value
+
+				}else {
+					alert("Cháu không biết !!!");
+				}
+			}
+
+			editBook.onclick = function() {
+
+			}
+
+
+
 		}else {}
 	}
 
@@ -226,58 +296,115 @@ sl-active
 		deleteDBTable();
 	}
 
-	function checkReader(idReader){
-		for (var i = 0; i < readers.length; i++) {
-			var reader = readers[i]['maSoDG'];
-			if(idReader.value == reader){
-				return true;
+	function addBook_ids(BookObjects){
+		Book_ids.value = "";
+		console.log(BookObjects)
+		for (var i = 0; i < BookObjects.length; i++) {
+			var BookObject = BookObjects[i];
+			var book_id = BookObject[0];
+			Book_ids.value += book_id + ",";
+		}
+		console.log(Book_ids.value)
+	}
+	function onOffButton(EventButton){
+		var value = codeBook.value;
+		if(EventButton == "add"){
+			if(value == ""){
+				addBook.classList.add('disabledbutton');
 			}else {
-				alert("Mã số độc giả không hợp lệ !!!");
-				return false;
+				addBook.classList.remove('disabledbutton');
 			}
+			deleteBook.classList.add('disabledbutton');
+			editBook.classList.add('disabledbutton');
+		}else {
+			addBook.classList.add('disabledbutton');
+			editBook.classList.remove('disabledbutton');
+			deleteBook.classList.remove('disabledbutton');
 		}
 		
 	}
-	
+	function createSelectItem(){
+		var itemSelects = document.querySelectorAll('.nav-item.cursorPointer');
+		for (var i = 0; i < itemSelects.length; i++) {
+			itemSelect = itemSelects[i];
+			itemSelect.onclick = function() {
+				var res = this.innerText.split(' | ');
+				codeBook.value = res[0];
+				onOffButton();
+			}
+		}
+	}
+
+	function checkObject(BookObjects,giveBook){
+		for (var i = 0; i < BookObjects.length; i++) {
+			var BookObject = BookObjects[i];
+			if(BookObject[0] == giveBook[0]){
+				return false;
+			}else {}
+		}
+		return true;
+	}
+
+	function checkReader(idReader){
+		for (var i = 0; i < readers.length; i++) {
+			var reader = readers[i]['maSoDG'];
+			if(idReader == reader){
+				var maSoDG = document.getElementById("maSoDG");
+				maSoDG.value = readers[i]['id'];
+				return true;
+			}else {}
+		}
+		alert("Mã số độc giả không hợp lệ !!!");
+		return false;
+
+	}
+
 	function onOffDisabled(on, off) {
 		on.classList.add('disabledbutton');
 		off.classList.remove('disabledbutton');
 	}
-	
+
 	function insertReadersArray(){
 		@foreach($readers as $reader)
-		readers.push({maSoDG:"{{$reader['maSoDG']}}"});
+		readers.push({id:"{{$reader['id']}}", maSoDG:"{{$reader['maSoDG']}}"});
 		@endforeach
 	}
 
 	function insertDBArray(){
 		@foreach($books as $book)
-		books.push({maSoSach:"{{$book->maSoSach}}",
+		books.push({
+			id:"{{$book->id}}",
+			maSoSach :"{{$book->maSoSach}}",
 			tenSach :"{{$book->tenSach}}",
 			loaiSach:"{{$book->loaiSach}}",
 			tacGia  :"{{$book->tacGia}}",
-			hoTenNXB:"{{$book->hoTenNXB}}"});
+			hoTenNXB:"{{$book->hoTenNXB}}",
+			soLuong:"{{$book->soLuong}}"})
 		@endforeach
 	}
 	function insertDBTable(){
 		var html = '';
 		for (var book of books) {
 			html += '<tr class="tr-info">';
+			html += '<input type="hidden" value="' + book.id + '"/>';
 			html += '<td>' + book.maSoSach + '</td>';
 			html += '<td>' + book.tenSach  + '</td>';
 			html += '<td>' + book.loaiSach + '</td>';
 			html += '<td>' + book.tacGia   + '</td>';
 			html += '<td>' + book.hoTenNXB + '</td>';
+			html += '<td>' + book.soLuong + '</td>';
 			html += '</tr>';
 		}
 		tbodyBooks.innerHTML = html;
 	}
-	
+
 	function deleteDBTable(){
 		var html = '';
 		tbodyBooks.innerHTML = html;
 		htmlSL = '';
 		listSelects.innerHTML = htmlSL;
+		codeBorrowEnd.value = "";
+		codeBook.value = "";
 	}
 </script>
 @endsection

@@ -22,6 +22,8 @@ Route::get('/home', 'HomeController@index')->name('home');
 
 Route::get('manager','MyController@getManager')->name('get.manager');
 
+/*--------------------------------------Book-----------------------------------------------------*/
+
 Route::get('manager/Book','BookController@getManagerBook')->name('get.manager.book');
 Route::get('manager/Book/Add','BookController@getManagerBook_Add')->name('get.manager.book.add');
 Route::get('manager/Book/Edit/{id}','BookController@getManagerBook_Edit')->name('get.manager.book.edit');
@@ -29,11 +31,18 @@ Route::get('manager/Book/Delete/{id}','BookController@getManagerBook_Delete')->n
 Route::post('manager/Book/Add','BookController@postManagerBook_Add')->name('post.manager.book.add');
 Route::post('manager/Book/Edit/{id}','BookController@postManagerBook_Edit')->name('post.manager.book.edit');
 
+/*--------------------------------------Readers----------------------------------------------------*/
 
 Route::get('manager/Readers','ReadersController@getManagerReaders')->name('get.manager.readers');
 
-Route::get('manager/BorrowBook','BorrowBookController@getBorrowBook')->name('get.manager.borrowBook');
 
+/*--------------------------------------BorrowBook-------------------------------------------------*/
+
+Route::get('manager/BorrowBook','BorrowBookController@getBorrowBook')->name('get.manager.borrowBook');
+Route::post('manager/BorrowBook','BorrowBookController@postBorrowBook')->name('post.manager.borrowBook');
+
+
+/*--------------------------------------Publisher--------------------------------------------------*/
 
 Route::get('manager/Publisher','PublisherController@getManagerPublisher')->name('get.manager.publisher');
 Route::get('manager/Publisher/Add','PublisherController@getManagerPublisher_Add')->name('get.manager.publisher.add');
@@ -42,6 +51,7 @@ Route::get('manager/Publisher/Delete/{id}','PublisherController@getManagerPublis
 Route::post('manager/Publisher/Add','PublisherController@postManagerPublisher_Add')->name('post.manager.publisher.add');
 Route::post('manager/Publisher/Edit/{id}','PublisherController@postManagerPublisher_Edit')->name('post.manager.publisher.edit');
 
+/*--------------------------------------Employees-------------------------------------------------*/
 
 Route::get('manager/Employees','EmployeesController@getManagerEmployees')->name('get.manager.employees');
 Route::get('manager/Employees/Add','EmployeesController@getManagerEmployees_Add')->name('get.manager.employees.add');

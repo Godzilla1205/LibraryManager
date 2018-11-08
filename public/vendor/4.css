@@ -139,6 +139,16 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
   .disabledbutton {
     pointer-events: none;
     opacity: 0.4;
+  }
+  .cursorPointer {
+    cursor: pointer;
+  }
+  .nav-item.cursorPointer:hover {
+    background-color: #ececec;
+    margin-left: -15px;
+    border-radius: 6px;
+    padding-left: 15px;
+    margin-right: -15px;
 }
 }
 
