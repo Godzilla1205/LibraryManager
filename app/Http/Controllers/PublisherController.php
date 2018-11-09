@@ -18,12 +18,12 @@ class PublisherController extends Controller
 
     public function postManagerPublisher_Add(Request $request){
         $publisher = $this->validate(request(), [
-            'maSoNXB' =>  'required|min:2|max:100',
+            'maSoNXB' =>  'required|min:2|max:100|unique:publishers,maSoNXB',
             'hoTenNXB' => 'required|min:2|max:100',
             'diaChiNXB' => 'max:200',
             'websiteNXB' => 'max:200',
             'thongTinKhacNXB' => 'max:200'
-        ]);
+        ]);   //unique:publisher
         publisher::create($publisher);
         return back()->with('success', 'Publisher has been added');
     }
@@ -35,7 +35,7 @@ class PublisherController extends Controller
     public function postManagerPublisher_Edit(Request $request, $id){
         $publisher = publisher::find($id);
         $this->validate(request(),[
-            'maSoNXB' =>  'required|min:2|max:100',
+            'maSoNXB' =>  'required|min:2|max:100|unique:publishers,maSoNXB',
             'hoTenNXB' => 'required|min:2|max:100',
             'diaChiNXB' => 'max:200',
             'websiteNXB' => 'max:200',

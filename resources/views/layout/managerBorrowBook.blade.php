@@ -55,7 +55,7 @@ sl-active
 						<div class="form-group disabledbutton">
 							<label class="col-sm-12 control-label" for="">Mã Phiếu Mượn</label>
 							<div class="col-sm-12">
-								<input id="codeBorrow" class="form-control" name="soPhieuMuon" type="text" value="@if(isset($borrowBooks[count($borrowBooks)-1]['soPhieuMuon'])){{$borrowBooks[count($borrowBooks)-1]['soPhieuMuon']+1}}@else{{1}}@endif">
+								<input id="codeBorrow" class="form-control" name="soPhieuMuon" type="text" value="@if(isset($borrowBooks[count($borrowBooks)-1]->soPhieuMuon)){{$borrowBooks[count($borrowBooks)-1]->soPhieuMuon+1}}@else{{1}}@endif">
 							</div>
 						</div> <!-- end form-group -->
 						<div class="form-group">
@@ -189,6 +189,7 @@ sl-active
 	insertReadersArray();
 
 	var books = [];
+	var detailBorrows = [];
 	insertDBArray();
 	//console.log(books[books.length-1]);
 	
@@ -381,6 +382,11 @@ sl-active
 			hoTenNXB:"{{$book->hoTenNXB}}",
 			soLuong:"{{$book->soLuong}}"})
 		@endforeach
+		@foreach($detailBorrows as $detailBorrow)
+		detailBorrows.push({
+			maSoSach :"{{$detailBorrow->maSoSach}}"})
+		@endforeach
+		console.log(detailBorrows)
 	}
 	function insertDBTable(){
 		var html = '';

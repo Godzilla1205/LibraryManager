@@ -15,7 +15,7 @@ class CreateBooksTable extends Migration
     {
         Schema::create('books', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('maSoSach',50);
+            $table->char('maSoSach',50)->unique();
             $table->integer('idNXB')->unsigned();
             $table->integer('idLoaiSach')->unsigned();
             $table->string('tenSach',100);

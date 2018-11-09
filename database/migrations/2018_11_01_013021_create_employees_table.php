@@ -15,7 +15,7 @@ class CreateEmployeesTable extends Migration
     {
         Schema::create('employees', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('maSoNV',50);
+            $table->char('maSoNV',50)->unique();
             $table->string('hoTenNV',100);
             $table->string('diaChiNV',100)->nullable();
             $table->date('ngaySinhNV')->nullable();

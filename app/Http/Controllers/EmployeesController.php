@@ -17,7 +17,7 @@ class EmployeesController extends Controller
     }
      public function postManagerEmployees_Add(Request $request){
        $employees = $this->validate(request(), [
-             'maSoNV' => 'required|min:2|max:50',
+             'maSoNV' => 'required|min:2|max:50|unique:employees,maSoNV',
              'hoTenNV'=> 'required|min:2|max:100',
              'diaChiNV' => 'max:100',
              'ngaySinhNV'=> 'nullable|date',
@@ -33,6 +33,7 @@ class EmployeesController extends Controller
             'max' => ':attribute không được lớn hơn :max',
             'numeric' => ':attribute chỉ được nhập số',
             'date' => ':attribute không đúng',
+            'unique' => ':attribute đã tồn tại'
         ],
         [
             'maSoNV' => 'Mã số nhân viên',

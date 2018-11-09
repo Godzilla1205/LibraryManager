@@ -15,7 +15,7 @@ class CreateTypeBooksTable extends Migration
     {
         Schema::create('type_books', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('maLoaiSach',50);
+            $table->char('maLoaiSach',50)->unique();
             $table->string('loaiSach',100);
             $table->timestamps();
         });

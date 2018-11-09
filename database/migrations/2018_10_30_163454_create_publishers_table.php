@@ -15,7 +15,7 @@ class CreatePublishersTable extends Migration
     {
         Schema::create('publishers', function (Blueprint $table) {
             $table->increments('id');
-            $table->char('maSoNXB',100);
+            $table->char('maSoNXB',100)->unique();
             $table->string('hoTenNXB',100);
             $table->string('diaChiNXB',200)->nullable();
             $table->string('websiteNXB',200)->nullable();
