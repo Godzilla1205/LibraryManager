@@ -15,6 +15,7 @@ use App\readers;
 class BorrowBookController extends Controller
 {
 	public function getBorrowBook(){
+
 		$employeess = employees::all()->toArray();
         //$borrowBooks = BorrowBooks::all()->toArray();
         $readers = readers::all()->toArray();
@@ -22,16 +23,57 @@ class BorrowBookController extends Controller
         ->select('books.id','books.maSoSach','books.tenSach','type_books.loaiSach','books.tacGia','publishers.hoTenNXB','books.soLuong')->get();
         
 
-        $borrowBooks = DB::select('select id, soPhieuMuon, maSoDG from borrow_books');
-        $detailBorrows = [];
-        foreach ($borrowBooks as $borrowBook) {
-            $detailBorrowBooks = DB::select('select maSoSach from info_borrow_books where soPhieuMuon = :idBorrowBook', ['idBorrowBook' => $borrowBook->id]);
-            $detailBorrows = [$borrowBook->id => $detailBorrowBooks];
-            array_push($detailBorrows,$detailBorrowBooks);
+        function changObjectToArray(&$nameArray, $nameObject, $selector) {
+            for ($i = 0; $i <count($nameObject); $i++) {
+                for ($j = 0; $j <count($selector); $j++) {
+                     array_push($nameArray, getValueObject($nameObject, $selector[$j], $i));
+                }
+            }
         }
-        return view("layout.managerBorrowBook",compact('employeess','detailBorrows','readers','borrowBooks','books'));
-    }
-    public function postBorrowBook(Request $request){
+        
+
+        function getValueObject($nameObject, $nameGet, $index = 0) {
+            return $nameObject[$index] -> $nameGet;
+        }
+
+        function setNameKeyArray($nameKey, $value) {
+            return [$nameKey => $value];
+        }
+
+        function dumpArray($nameArray) {
+           echo "<pre>";
+           var_dump ($nameArray);
+           echo "</pre>";
+        }
+
+
+
+        $readerBorrows = DB::select('select maSoDG, Count(*) from borrow_books Group By maSoDG');
+        
+        $borrowBooks = DB::select('select id, soPhieuMuon from borrow_books');
+        
+        $detailBorrows = [];
+        
+        foreach ($readerBorrows as $readerBorrow) {    
+              $idReadersBorrow = DB::table('borrow_books')->select('borrow_books.soPhieuMuon','borrow_books.maSoDG')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
+               
+              $idBooksBorrow = DB::table('info_borrow_books')->join('borrow_books','borrow_books.id','=','info_borrow_books.soPhieuMuon')->select('info_borrow_books.maSoSach')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
+              $listBorrowBooks  = [];
+              $idReader = getValueObject($idReadersBorrow,'maSoDG');
+             
+              changObjectToArray($listBorrowBooks, $idBooksBorrow, ['maSoSach']);
+
+              $arrayIdReader = setNameKeyArray('maSoDG', $idReader);
+              $arrayIdBooks = setNameKeyArray('maSoSach', $listBorrowBooks);
+              $arrayBorrowBook = array_merge($arrayIdReader, $arrayIdBooks);
+              array_push($detailBorrows, $arrayBorrowBook);
+        }
+  /*            dumpArray($detailBorrows);
+       
+       die();*/
+       return view("layout.managerBorrowBook",compact('employeess','detailBorrows','readers','borrowBooks','books'));
+   }
+   public function postBorrowBook(Request $request){
         // $borrowBook = $this->validate(request(), [
         //      'soPhieuMuon' => 'required',
         //      'maSoDG'=> 'required',
@@ -54,62 +96,62 @@ class BorrowBookController extends Controller
         // ]);
 
         // DB::insert('insert into borrow_books (soPhieuMuon, maSoDG, maSoNV, ngayMuon) values (?, ?, ?, ?)', [$request->soPhieuMuonEnd,$request->maSoDG, $request->maSoNV,date("Y-m-d",strtotime($request->ngayMuon))]);
-        $checkBook = $this->validate(request(), [
-            'Book_ids'=> 'required'
-        ]
-        ,[
-            'required' => ':attribute không được để trống'
-        ],
-        [
-            'Book_ids' => 'Mã số sách',
-        ]);
+    $checkBook = $this->validate(request(), [
+        'Book_ids'=> 'required'
+    ]
+    ,[
+        'required' => ':attribute không được để trống'
+    ],
+    [
+        'Book_ids' => 'Mã số sách',
+    ]);
 
-        $borrowBook = $this->validate(request(), [
-            'soPhieuMuon' => 'required',
-            'maSoDG'=> 'required',
-            'maSoNV' => 'required',
-            'ngayMuon'=> 'required|date'
-        ]
-        ,[
-            'required' => ':attribute không được để trống',
-            'date' => ':attribute không đúng'
-        ],
-        [
-            'soPhieuMuon' => 'Số phiếu mượn',
-            'maSoDG' => 'Mã số độc giả',
-            'maSoNV' => 'Mã số nhân viên',
-            'ngayMuon' => 'Ngày mượn'
-        ]);
+    $borrowBook = $this->validate(request(), [
+        'soPhieuMuon' => 'required',
+        'maSoDG'=> 'required',
+        'maSoNV' => 'required',
+        'ngayMuon'=> 'required|date'
+    ]
+    ,[
+        'required' => ':attribute không được để trống',
+        'date' => ':attribute không đúng'
+    ],
+    [
+        'soPhieuMuon' => 'Số phiếu mượn',
+        'maSoDG' => 'Mã số độc giả',
+        'maSoNV' => 'Mã số nhân viên',
+        'ngayMuon' => 'Ngày mượn'
+    ]);
 
-        $infoBorrowBook = $this->validate(request(), [
-            'soPhieuMuon' => '',
-            'hanTra'=> 'required|date'
-        ]
-        ,[
-            'required' => ':attribute không được để trống',
-            'date' => ':attribute không đúng'
-        ],
-        [
-            'soPhieuMuon' => 'Số phiếu mượn',
-            'hanTra' => 'Hạn trả'
-        ]);
+    $infoBorrowBook = $this->validate(request(), [
+        'soPhieuMuon' => '',
+        'hanTra'=> 'required|date'
+    ]
+    ,[
+        'required' => ':attribute không được để trống',
+        'date' => ':attribute không đúng'
+    ],
+    [
+        'soPhieuMuon' => 'Số phiếu mượn',
+        'hanTra' => 'Hạn trả'
+    ]);
 
-        $borrowBook['ngayMuon'] = date("Y-m-d",strtotime($borrowBook['ngayMuon']));
-        BorrowBooks::create($borrowBook);
-        
-        $borrow_Books = DB::table('borrow_books')->select('id')->get()->toArray();
-        $idBorrow_Book = $borrow_Books[count($borrow_Books)-1];
-        $infoBorrowBook['hanTra'] = date("Y-m-d",strtotime($infoBorrowBook['hanTra']));
+    $borrowBook['ngayMuon'] = date("Y-m-d",strtotime($borrowBook['ngayMuon']));
+    BorrowBooks::create($borrowBook);
 
-        $array = ['soPhieuMuon'=>$idBorrow_Book->id,'soLuong'=>1,'trangThai'=>0];
-        $infoBorrowBook = array_merge($infoBorrowBook,$array);
-        $Book_ids = explode(",",$request->Book_ids);
-        array_pop($Book_ids);
-        foreach ($Book_ids as $Book_id) {
-           $arrayBookId = ['maSoSach'=>$Book_id];
-           $detailBorrowBook = array_merge($infoBorrowBook,$arrayBookId);
-           InfoBorrowBooks::create($detailBorrowBook);
-       }
-       return back()->with('success', 'Borrow book has been added');
+    $borrow_Books = DB::table('borrow_books')->select('id')->get()->toArray();
+    $idBorrow_Book = $borrow_Books[count($borrow_Books)-1];
+    $infoBorrowBook['hanTra'] = date("Y-m-d",strtotime($infoBorrowBook['hanTra']));
+
+    $array = ['soPhieuMuon'=>$idBorrow_Book->id,'soLuong'=>1,'trangThai'=>0];
+    $infoBorrowBook = array_merge($infoBorrowBook,$array);
+    $Book_ids = explode(",",$request->Book_ids);
+    array_pop($Book_ids);
+    foreach ($Book_ids as $Book_id) {
+       $arrayBookId = ['maSoSach'=>$Book_id];
+       $detailBorrowBook = array_merge($infoBorrowBook,$arrayBookId);
+       InfoBorrowBooks::create($detailBorrowBook);
    }
+   return back()->with('success', 'Borrow book has been added');
+}
 }

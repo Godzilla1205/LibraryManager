@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<link rel="stylesheet" href="{{asset('vendor/4.css')}}">
+	<link rel="stylesheet" href="{{asset('vendor/3.css')}}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -78,7 +78,7 @@
 					<a class="nav-link" href="#"><i class="fa fa-envelope"></i> Contact <span class="sr-only">(current)</span></a>
 				</li>
 				<li class="nav-item dropdown">
-				@can('edit-profile')
+					@can('edit-profile')
 					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Profile </a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
 						<a class="dropdown-item" href="user.html">My account</a>
@@ -95,7 +95,7 @@
 				</div>
 				@endcan
 				@cannot('edit-profile')
-					<a class="nav-link" href="{{route('login')}}"><i class="fa fa-user"></i> Login </a>
+				<a class="nav-link" href="{{route('login')}}"><i class="fa fa-user"></i> Login </a>
 				@endcannot
 			</li>
 		</ul>

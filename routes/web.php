@@ -34,6 +34,9 @@ Route::post('manager/Book/Edit/{id}','BookController@postManagerBook_Edit')->nam
 /*--------------------------------------Readers----------------------------------------------------*/
 
 Route::get('manager/Readers','ReadersController@getManagerReaders')->name('get.manager.readers');
+Route::get('manager/Readers/Add','ReadersController@getManagerReaders_Add')->name('get.manager.readers.add');
+Route::post('manager/Readers/Add','ReadersController@postManagerReaders_Add')->name('post.manager.readers.add');
+Route::get('manager/Readers/Detail/{id}','ReadersController@getManagerReaders_Detail')->name('get.manager.readers.detail');
 
 
 /*--------------------------------------BorrowBook-------------------------------------------------*/

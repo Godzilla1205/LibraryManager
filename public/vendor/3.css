@@ -150,6 +150,20 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
     padding-left: 15px;
     margin-right: -15px;
 }
+  .spanCodeBook {
+    width: 50px;
+    display: inline-block;
+}
+  .tr-info.row-active {
+      background-color: #ececec;
+  }
+  .nav-item.cursorPointer.row-active {
+      background-color: #ececec;
+      margin-left: -15px;
+      border-radius: 6px;
+      padding-left: 15px;
+      margin-right: -15px;
+  }
 }
 
 

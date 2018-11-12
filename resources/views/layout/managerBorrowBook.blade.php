@@ -61,7 +61,7 @@ sl-active
 						<div class="form-group">
 							<label class="col-sm-12 control-label" for="">Mã Độc Giả</label>
 							<div class="col-sm-12">
-								<input class="form-control" id="idReader" value="DG001" type="text">
+								<input class="form-control" id="idReader" value="DG002" type="text">
 								<input type="hidden" id="maSoDG" name="maSoDG">
 							</div>
 						</div> <!-- end form-group --> 
@@ -187,9 +187,10 @@ sl-active
 	termBorrow.value = toDay;
 	var readers = [];
 	insertReadersArray();
-
+	var numberListSelect = 5;
 	var books = [];
 	var detailBorrows = [];
+	var detailBorrow = [];
 	insertDBArray();
 	//console.log(books[books.length-1]);
 	
@@ -200,7 +201,6 @@ sl-active
 			onOffDisabled(onDisabled, offDisabled);	
 			insertDBTable();
 			var htmlSL = '';
-			var numberListSelect = 0;
 			var rowBooks = document.querySelectorAll('#tbodyBooks tr');
 			var codeBorrowEnd = document.getElementById('codeBorrowEnd');
 			var codeBook = document.getElementById('codeBook');
@@ -208,28 +208,38 @@ sl-active
 			var giveBook;
 			for (var i = 0; i < rowBooks.length; i++) {
 				var rowBook = rowBooks[i];
-				rowBook.onclick = function() {	
-					giveBook = [
-					this.firstChild.defaultValue,
-					this.cells[0].innerText,
-					this.cells[1].innerText,
-					this.cells[5].innerText
-					];
-					codeBook.value = giveBook[1];
-					onOffButton("add");
-					// Kiểm tra độc giả mượn trước đó trưa
-					// kiểm tra độc giả có đủ số lần mượn sách không
+				rowBook.onclick = function() {
+					var idBook = this.firstChild.defaultValue;
+					// console.log(idBook);
+					// console.log(getBook(idBook));
+					giveBook = [getBook(idBook)];
+					// console.log(giveBook)
+					// this.firstChild.defaultValue,
+					// this.cells[0].innerText,
+					// this.cells[1].innerText,
+					// this.cells[5].innerText
+					
+					codeBook.value = giveBook[0].maSoSach;
 
-
-
-
+					deActiveRow('.tr-info.row-active');
+					deActiveRow('.nav-item.cursorPointer.row-active');
+					this.classList.add('row-active');
+					enableBtnAdd();
+					disableBtnEdit();
+					disableBtnDelete();
 				}
 
 			}
 
 
+
+
 			codeBook.onkeyup = function() {
-				onOffButton("add");
+				deActiveRow('.tr-info.row-active');
+				deActiveRow('.nav-item.cursorPointer.row-active');
+				enableBtnAdd();
+				enableBtnEdit();
+				enableBtnDelete();
 			}
 
 			var BookObjects = [];
@@ -237,29 +247,42 @@ sl-active
 			var deleteBook = document.getElementById('deleteBook');
 			var editBook = document.getElementById('editBook');
 
+			function formatText(str, start, end, replace) {
+				if(str.length>end) {
+					str = str.slice(start,end) + replace;
+				}
+				return str;
+			}
+
 			addBook.onclick = function() {
-				var numberBook = giveBook[3];
-				var nameBook = giveBook[2];
+				var numberBook = giveBook[0].soLuong;
+				var nameBook = giveBook[0].tenSach;
+				var idBook = giveBook[0].id;
+				nameBook = formatText(nameBook, 0, 20, "...");
 				if(numberBook>0){
-					if(checkObject(BookObjects, giveBook)){
-						numberListSelect = listSelects.childElementCount;
-						if(numberListSelect<5){
-							htmlSL += '<li class="nav-item cursorPointer">';
-							htmlSL += '<a class="nav-link" href="javascript:void(0)">';
-							htmlSL += '<span>'+ codeBook.value + " | " +  nameBook + '</span>';
-							htmlSL += '</a>';
-							htmlSL += '</li>';
-							listSelects.innerHTML = htmlSL;
-							BookObjects.push(giveBook);
-							createSelectItem();
-							addBook_ids(BookObjects);
-							codeBook.value = "";
-							onOffButton("add");
+					if(checkDetailBorrows(idBook)){
+						if(checkObject(BookObjects, giveBook)){
+							if(numberListSelect>0){
+								htmlSL += '<li class="nav-item cursorPointer">';
+								htmlSL += '<a class="nav-link" href="javascript:void(0)">';
+								htmlSL += '<span><span class="spanCodeBook">'+ codeBook.value + "</span> | 	" +  nameBook + '</span>';
+								htmlSL += '</a>';
+								htmlSL += '</li>';
+								listSelects.innerHTML = htmlSL;
+								BookObjects.push(giveBook);
+								createSelectItem();
+								addBook_ids(BookObjects);
+								codeBook.value = "";
+								disableBtnAdd();
+								numberListSelect -= 1;
+							}else {
+								alert('Quá giới hạn cho mượn sách của độc giả này !!!');
+							}
 						}else {
-							alert('Số lượng sách mượn không được quá 5 !!!');
+							alert('Sách đã được chọn rồi!!!');
 						}
 					}else {
-						alert('Sách đã được chọn rồi!!!');
+						alert('Độc giả đã mượn sách này trước đó !!!');
 					}
 
 				}else {
@@ -269,12 +292,12 @@ sl-active
 			
 			
 			deleteBook.onclick = function() {
-				if(codeBook.value !== ""){
-					//if(BookObjects.isArray)
-					if(BookObjects == false){
-						console.log('un');
-					}else {console.log('no')}
-					//codeBook.value
+				if(codeBook.value !== "") {
+					if(BookObjects == false) {
+						console.log('Không có thằng nào để xóa !!!');
+					}else {
+						console.log('Xóa theo id');
+					}
 
 				}else {
 					alert("Cháu không biết !!!");
@@ -299,31 +322,44 @@ sl-active
 
 	function addBook_ids(BookObjects){
 		Book_ids.value = "";
-		console.log(BookObjects)
+		//console.log(BookObjects)
 		for (var i = 0; i < BookObjects.length; i++) {
 			var BookObject = BookObjects[i];
 			var book_id = BookObject[0];
 			Book_ids.value += book_id + ",";
 		}
-		console.log(Book_ids.value)
+		//console.log(Book_ids.value)
 	}
-	function onOffButton(EventButton){
-		var value = codeBook.value;
-		if(EventButton == "add"){
-			if(value == ""){
-				addBook.classList.add('disabledbutton');
-			}else {
-				addBook.classList.remove('disabledbutton');
-			}
-			deleteBook.classList.add('disabledbutton');
-			editBook.classList.add('disabledbutton');
-		}else {
-			addBook.classList.add('disabledbutton');
-			editBook.classList.remove('disabledbutton');
-			deleteBook.classList.remove('disabledbutton');
+
+	function getBook(id) {
+		for (var i = 0; i < books.length; i++) {
+			book = books[i];
+			if(book.id == id) {
+				return book;
+			}else {}
 		}
-		
+		return null;
 	}
+	function enableBtnAdd() {
+		addBook.classList.remove('disabledbutton');
+	}
+	function disableBtnAdd() {
+		addBook.classList.add('disabledbutton');
+	}
+	function enableBtnEdit() {
+		editBook.classList.remove('disabledbutton');
+	}
+	function disableBtnEdit() {
+		editBook.classList.add('disabledbutton');
+	}
+	function enableBtnDelete() {
+		deleteBook.classList.remove('disabledbutton');
+	}
+	function disableBtnDelete() {
+		deleteBook.classList.add('disabledbutton');
+	}
+
+
 	function createSelectItem(){
 		var itemSelects = document.querySelectorAll('.nav-item.cursorPointer');
 		for (var i = 0; i < itemSelects.length; i++) {
@@ -331,7 +367,12 @@ sl-active
 			itemSelect.onclick = function() {
 				var res = this.innerText.split(' | ');
 				codeBook.value = res[0];
-				onOffButton();
+				deActiveRow('.tr-info.row-active');
+				deActiveRow('.nav-item.cursorPointer.row-active');
+				this.classList.add('row-active');
+				disableBtnAdd();
+				enableBtnEdit();
+				enableBtnDelete();
 			}
 		}
 	}
@@ -352,6 +393,21 @@ sl-active
 			if(idReader == reader){
 				var maSoDG = document.getElementById("maSoDG");
 				maSoDG.value = readers[i]['id'];
+				console.log(detailBorrows)
+				for (var i = 0; i < detailBorrows.length; i++) {
+					if(detailBorrows[i]['maSoDG'] == maSoDG.value) {
+						var numberBookBorrow = detailBorrows[i]['maSoSach'].length;
+						var maxBorrowBook = 5;
+						if(numberBookBorrow == maxBorrowBook){
+							alert("Độc giả đã mượn " + maxBorrowBook + " quyển sách không thể mượn thêm !!!");
+							return false;
+						}else {
+							numberListSelect = maxBorrowBook - numberBookBorrow;
+							detailBorrow = detailBorrows[i];
+						}
+					}else {}
+				}
+				alert("Độc giả có thể mượn " + numberListSelect + " quyển sách !!!")
 				return true;
 			}else {}
 		}
@@ -360,9 +416,18 @@ sl-active
 
 	}
 
+
 	function onOffDisabled(on, off) {
 		on.classList.add('disabledbutton');
 		off.classList.remove('disabledbutton');
+	}
+
+	function deActiveRow(selector) {
+		var rowBook = document.querySelectorAll(selector);
+		for (var i = 0; i < rowBook.length; i++) {
+			var rowBook = rowBook[i];
+			rowBook.classList.remove('row-active');
+		}
 	}
 
 	function insertReadersArray(){
@@ -382,12 +447,32 @@ sl-active
 			hoTenNXB:"{{$book->hoTenNXB}}",
 			soLuong:"{{$book->soLuong}}"})
 		@endforeach
+		
 		@foreach($detailBorrows as $detailBorrow)
+		var array = [];
+		@foreach($detailBorrow['maSoSach'] as $maSoSach)
+		array.push({{$maSoSach}});
+		@endforeach
 		detailBorrows.push({
-			maSoSach :"{{$detailBorrow->maSoSach}}"})
+			maSoDG:"{{$detailBorrow['maSoDG']}}",
+			maSoSach:array
+		})
 		@endforeach
 		console.log(detailBorrows)
 	}
+	function checkDetailBorrows(idBook) {
+		//console.log("id muon:" + idBook);
+		if(detailBorrow['maSoSach'] != null){
+			for (var i = 0; i < detailBorrow['maSoSach'].length; i++) {
+				//console.log("id muon truoc do:" + detailBorrow['maSoSach'][i])
+				if(detailBorrow['maSoSach'][i] == idBook){
+					return false;
+				} else {}
+			}
+		}
+		return true;
+	}
+
 	function insertDBTable(){
 		var html = '';
 		for (var book of books) {
@@ -409,6 +494,8 @@ sl-active
 		tbodyBooks.innerHTML = html;
 		htmlSL = '';
 		listSelects.innerHTML = htmlSL;
+		detailBorrow = [];
+		numberListSelect = 5;
 		codeBorrowEnd.value = "";
 		codeBook.value = "";
 	}
