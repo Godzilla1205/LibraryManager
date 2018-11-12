@@ -10,15 +10,15 @@ body{background:#f9f9f9;}
   overflow-x: hidden;
 }
 
-a.btn.btn-primary.waves-effect.waves-light {
+.action-button a.btn.btn-primary.waves-effect.waves-light {
   padding: 13px 13px 10px 15px;
 }
 
-a.btn.btn-primary.waves-effect.waves-light>i,a.btn.btn-danger.waves-effect.waves-light>i {
+.action-button a.btn.btn-primary.waves-effect.waves-light>i,a.btn.btn-danger.waves-effect.waves-light>i {
   font-size: 21px;
 }
 
-a.btn.btn-danger.waves-effect.waves-light {
+.action-button a.btn.btn-danger.waves-effect.waves-light {
   padding: 13px 16px 10px 16px;
 }
 
@@ -282,19 +282,20 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
   }
 
   
-  a.btn.btn-primary.waves-effect.waves-light {
+ .action-button a.btn.btn-primary.waves-effect.waves-light {
     width: 49px;
     height: 43px;
   }
 
-  a.btn.btn-primary.waves-effect.waves-light>i,a.btn.btn-danger.waves-effect.waves-light>i {
+ .action-button a.btn.btn-primary.waves-effect.waves-light>i,a.btn.btn-danger.waves-effect.waves-light>i {
     font-size: 21px;
   }
 
-  a.btn.btn-danger.waves-effect.waves-light {
+ .action-button a.btn.btn-danger.waves-effect.waves-light {
     width: 49px;
     height: 43px;
   }
+  
   td.action-button {
     width: 127px!important;
     height: 60px!important;

@@ -71,7 +71,7 @@ class BookController extends Controller
     public function postManagerBook_Edit(Request $request,$id){
         $book = book::find($id);
         $this->validate(request(),[ 
-             'maSoSach'   => 'required|min:2|max:50|unique:books,maSoSach',
+             'maSoSach'   => 'required|min:2|max:50',
              'idNXB'      => 'required|min:1|max:10',
              'idLoaiSach' => 'required|min:1|max:10',
              'tenSach'    => 'required|min:2|max:100',
@@ -88,7 +88,6 @@ class BookController extends Controller
             'min' => ':attribute không được nhỏ hơn :min',
             'max' => ':attribute không được lớn hơn :max',
             'numeric' => ':attribute chỉ được nhập số',
-            'unique' => ':attribute đã tồn tại'
         ],
         [
             'maSoSach' => 'Mã số sách',

@@ -37,6 +37,9 @@ Route::get('manager/Readers','ReadersController@getManagerReaders')->name('get.m
 Route::get('manager/Readers/Add','ReadersController@getManagerReaders_Add')->name('get.manager.readers.add');
 Route::post('manager/Readers/Add','ReadersController@postManagerReaders_Add')->name('post.manager.readers.add');
 Route::get('manager/Readers/Detail/{id}','ReadersController@getManagerReaders_Detail')->name('get.manager.readers.detail');
+Route::get('manager/Readers/Detail/Edit/{id}','ReadersController@getManagerReaders_Edit')->name('get.manager.readers.edit');
+Route::post('manager/Readers/Detail/Edit/{id}','ReadersController@postManagerReaders_Edit')->name('post.manager.readers.edit');
+Route::get('manager/Readers/Detail/Delete/{id}','ReadersController@getManagerReaders_Delete')->name('get.manager.readers.delete');
 
 
 /*--------------------------------------BorrowBook-------------------------------------------------*/

@@ -49,11 +49,6 @@ sl-active
       <table class="table table-sm table-hover">
         <thead class="thead-light">
           <tr>
-            <th scope="col">
-              <div class="checkbox checkbox-primary table-checkbox">
-                <input type="checkbox" class="checkboxes"value="1">
-              </div>
-            </th>
             <th scope="col">STT</th>
             <th scope="col">Mã DG</th>
             <th scope="col">Họ Tên</th>
@@ -67,11 +62,6 @@ sl-active
         <tbody>
           @foreach($readers as $reader)
           <tr class="tr-info">
-            <th scope="row">
-              <div class="checkbox checkbox-primary">
-                <input type="checkbox" class="checkboxes"value="1">
-              </div>
-            </th>
             <td>{{++$stt}}</td>
             <td>{{$reader->maSoDG}}</td>
             <td>{{$reader->hoTenDG}}</td>

@@ -49,92 +49,97 @@ sl-active
       @method('post')
       @csrf
       <div class="row">
-        <div class="col-sm-4">
-          <div class="form-group">
-            <label class="col-sm-12 control-label" for="">Mã Số Sách</label>
-            <div class="col-sm-12">
-              <input class="form-control" name="maSoSach" type="text" value="{{$book['maSoSach']}}">
+        <div class="col-sm-8">
+          <div class="row">
+            <div class="col-sm-6">
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="">Mã Số Sách</label>
+                <div class="col-sm-12">
+                  <input class="form-control" name="maSoSach" type="text" value="{{$book['maSoSach']}}">
+                </div>
+              </div> <!-- end form-group -->
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="">Tên Sách</label>
+                <div class="col-sm-12">
+                  <input class="form-control" name="tenSach" type="text" value="{{$book['tenSach']}}">
+                </div>
+              </div> <!-- end form-group --> 
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <label class="control-label">Loại Sách</label>
+                  <select class="form-control" name="idLoaiSach">
+                    @foreach($typeBooks as $typeBook)
+                    <option @if($typeBook['id']==$book['idLoaiSach']){{'selected'}}@endif value="{{$typeBook['id']}}">{{$typeBook['loaiSach']}}</option>
+                    @endforeach
+                  </select>
+                </div>
+              </div> <!-- end form-group -->
+              <div class="form-group">
+                <label class="col-sm-12 control-label" for="">Tác Giả</label>
+                <div class="col-sm-12">
+                  <input class="form-control" name="tacGia" type="text" value="{{$book['tacGia']}}">
+                </div>
+              </div> <!-- end form-group --> 
             </div>
-          </div> <!-- end form-group -->
-          <div class="form-group">
-            <label class="col-sm-12 control-label" for="">Tên Sách</label>
+            <div class="col-sm-6">
+              <div class="form-group">
+                <div class="col-sm-12">
+                  <label class="control-label">Tên NXB</label>
+                  <select class="form-control" name="idNXB">
+                   @foreach($publishers as $publisher)
+                   <option value="{{$publisher['id']}}">{{$publisher['hoTenNXB']}}</option>
+                   @endforeach
+                 </select>
+               </div>
+             </div> <!-- end form-group -->
+             <div class="form-group">
+              <div class="container">
+                <div class="row">
+                  <div class="col-sm-6">
+                   <label class="control-label" for="">Năm XB</label>
+                   <input class="col-sm-12 form-control" name="namXB" type="text" value="{{$book['namXB']}}">
+                 </div>
+                 <div class="col-sm-6">
+                   <label class="control-label" for="">Lần XB</label>
+                   <input class="col-sm-12 form-control" name="lanXB" type="text" value="{{$book['lanXB']}}">
+                 </div>
+               </div>
+             </div>
+           </div> <!-- end form-group -->
+           <div class="form-group">
+            <label class="col-sm-12 control-label" for="">Giá Tiền</label>
             <div class="col-sm-12">
-              <input class="form-control" name="tenSach" type="text" value="{{$book['tenSach']}}">
+              <input class="form-control" name="giaTien" type="text" value="{{$book['giaTien']}}">
             </div>
           </div> <!-- end form-group --> 
           <div class="form-group">
+            <label class="col-sm-12 control-label" for="">Số lượng</label>
             <div class="col-sm-12">
-              <label class="control-label">Loại Sách</label>
-              <select class="form-control" name="idLoaiSach">
-                @foreach($typeBooks as $typeBook)
-                <option value="{{$typeBook['id']}}">{{$typeBook['loaiSach']}}</option>
-                @endforeach
-              </select>
-            </div>
-          </div> <!-- end form-group -->
-          <div class="form-group">
-            <label class="col-sm-12 control-label" for="">Tác Giả</label>
-            <div class="col-sm-12">
-              <input class="form-control" name="tacGia" type="text" value="{{$book['tacGia']}}">
+              <input class="form-control" name="soLuong" type="text" value="{{$book['soLuong']}}">
             </div>
           </div> <!-- end form-group --> 
         </div>
-        <div class="col-sm-4">
-          <div class="form-group">
+      </div>
+      <div class="row">
+          <div class="col-sm-8">
+           <div class="form-group">
+            <label class="col-sm-12 control-label" for="">Nội dung tóm lược</label>
             <div class="col-sm-12">
-              <label class="control-label">Tên NXB</label>
-              <select class="form-control" name="idNXB">
-               @foreach($publishers as $publisher)
-               <option value="{{$publisher['id']}}">{{$publisher['hoTenNXB']}}</option>
-               @endforeach
-             </select>
-           </div>
-         </div> <!-- end form-group -->
-         <div class="form-group">
-          <div class="container">
-            <div class="row">
-              <div class="col-sm-6">
-               <label class="control-label" for="">Năm XB</label>
-               <input class="col-sm-12 form-control" name="namXB" type="text" value="{{$book['namXB']}}">
-             </div>
-             <div class="col-sm-6">
-               <label class="control-label" for="">Lần XB</label>
-               <input class="col-sm-12 form-control" name="lanXB" type="text" value="{{$book['lanXB']}}">
-             </div>
-           </div>
-         </div>
-       </div> <!-- end form-group -->
-       <div class="form-group">
-        <label class="col-sm-12 control-label" for="">Giá Tiền</label>
-        <div class="col-sm-12">
-          <input class="form-control" name="giaTien" type="text" value="{{$book['giaTien']}}">
+              <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8">{{$book['noiDungTomLuoc']}}</textarea>
+            </div>
+          </div>
         </div>
-      </div> <!-- end form-group --> 
-      <div class="form-group">
-        <label class="col-sm-12 control-label" for="">Số lượng</label>
-        <div class="col-sm-12">
-          <input class="form-control" name="soLuong" type="text" value="{{$book['soLuong']}}">
-        </div>
-      </div> <!-- end form-group --> 
-    </div>
-    <div class="col-sm-4">
-      <fieldset class="form-group">
-        <img class="form-control card-img-top img-fluid" src="{{asset('images')."/".$book['linkAnh']}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
-        <input type="file" id="avatar" onchange="AutoUpload();">
-        <input type="hidden" id="avatarHidden" name="linkAnh" value="{{$book['linkAnh']}}">
-      </fieldset>
-    </div>
-  </div>
-  <div class="row">
-    <div class="col-sm-8">
-     <div class="form-group">
-      <label class="col-sm-12 control-label" for="">Nội dung tóm lược</label>
-      <div class="col-sm-12">
-        <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8">{{$book['noiDungTomLuoc']}}</textarea>
       </div>
     </div>
+  <div class="col-sm-4">
+    <fieldset class="form-group">
+      <img class="form-control card-img-top img-fluid" src="{{asset('images')."/".$book['linkAnh']}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
+      <input type="file" id="avatar" onchange="AutoUpload();">
+      <input type="hidden" id="avatarHidden" name="linkAnh" value="{{$book['linkAnh']}}">
+    </fieldset>
   </div>
 </div>
+
 <div class="row">
   <div class="col-sm-8">
     <div class="form-group">

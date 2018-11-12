@@ -49,16 +49,16 @@ sl-active
         <div class="col-sm-6">
           <div class="container">
             <div class="form-group">
-              <label class="col-sm-5 control-label" for="">Mã Số Độc Giả:</label>
-              <span class="col-sm-7">{{$reader->maSoDG}}</span>
+              <label class="col-sm-4 control-label" for="">Mã Số Độc Giả:</label>
+              <span class="col-sm-8">{{$reader->maSoDG}}</span>
             </div> <!-- end form-group -->
             <div class="form-group">
-              <label class="col-sm-5 control-label" for="">Họ Tên:</label>
-              <span class="col-sm-7">{{$reader->hoTenDG}}</span>
+              <label class="col-sm-4 control-label" for="">Họ Tên:</label>
+              <span class="col-sm-8">{{$reader->hoTenDG}}</span>
             </div> <!-- end form-group --> 
             <div class="form-group">
-              <label class="col-sm-5 control-label" for="">Giới Tính:</label>
-              <span class="col-sm-7">
+              <label class="col-sm-4 control-label" for="">Giới Tính:</label>
+              <span class="col-sm-8">
                 @if($reader->gioiTinh == 1)
                   {{"Nam"}}
                 @else
@@ -67,37 +67,37 @@ sl-active
               </span>
             </div> <!-- end form-group -->
             <div class="form-group">
-              <label class="col-sm-5 control-label" for="">Ngáy Sinh:</label>
-              <span class="col-sm-7">{{$reader->ngaySinh}}</span>
+              <label class="col-sm-4 control-label" for="">Ngáy Sinh:</label>
+              <span class="col-sm-8">{{$reader->ngaySinh}}</span>
             </div> <!-- end form-group -->
             <div class="form-group">
-             <label class="col-sm-5 control-label" for="">Khoa:</label>
-             <span class="col-sm-7">{{$reader->tenKhoa}}</span>
+             <label class="col-sm-4 control-label" for="">Khoa:</label>
+             <span class="col-sm-8">{{$reader->tenKhoa}}</span>
            </div> <!-- end form-group -->
          </div>
        </div>
        <div class="col-sm-6">
          <div class="container">
            <div class="form-group">
-            <label class="col-sm-5 control-label" for="">Ngày Cấp:</label>
-            <span class="col-sm-7">{{$reader->ngayCap}}</span>
+            <label class="col-sm-4 control-label" for="">Ngày Cấp:</label>
+            <span class="col-sm-8">{{$reader->ngayCap}}</span>
           </div> <!-- end form-group -->
           <div class="form-group">
-            <label class="col-sm-5 control-label" for="">Hạn Sử Dụng:</label>
-            <span class="col-sm-7">{{$reader->hanSuDung}}</span>
+            <label class="col-sm-4 control-label" for="">Hạn Sử Dụng:</label>
+            <span class="col-sm-8">{{$reader->hansuDung}}</span>
           </div> <!-- end form-group -->
           <div class="form-group">
-            <label class="col-sm-5 control-label" for="">Email:</label>
-            <span class="col-sm-7">{{$reader->email}}</span>
+            <label class="col-sm-4 control-label" for="">Email:</label>
+            <span class="col-sm-8">{{$reader->email}}</span>
           </div> <!-- end form-group --> 
           <div class="form-group">
-            <label class="col-sm-5 control-label" for="">Địa Chỉ:</label>
-            <span class="col-sm-7">{{$reader->diaChiDG}}</span>
+            <label class="col-sm-4 control-label" for="">Địa Chỉ:</label>
+            <span class="col-sm-8">{{$reader->diaChiDG}}</span>
           </div> <!-- end form-group --> 
           <div class="form-group">
-            <label class="col-sm-5 control-label" for="">Bị phạt:</label>
+            <label class="col-sm-4 control-label" for="">Bị phạt:</label>
             <span class="col-sm-4">2 lần</span>
-            <span class="col-sm-3"><a class="btn btn-primary" style="position: absolute;top: -20px;width: 65px;" href="#"><i class="fa fa-edit"></i></a></span>
+            <span class="col-sm-4"><a class="btn btn-primary waves-effect waves-light" style="position: absolute;top: -20px;width: 65px;padding: 13px 13px 10px 15px;height: 43px;" href="#"><i class="fa fa-edit"></i></a></span>
           </div> <!-- end form-group --> 
         </div>
       </div>
@@ -146,8 +146,8 @@ sl-active
   <div class="row">
     <div class="col-sm-12">
       <div class="form-group text-center">
-          <a href="{route('get.manager.readers')}}" class="btn btn-warning">Sửa</a>
-          <a href="{route('get.manager.readers')}}" class="btn btn-danger">Xóa</a>
+          <a href="{{action('ReadersController@getManagerReaders_Edit',$id)}}" class="btn btn-warning">Sửa</a>
+          <a href="{{action('ReadersController@getManagerReaders_Delete',$id)}}" class="btn btn-danger">Xóa</a>
           <a href="{{route('get.manager.readers')}}" class="btn btn-default">Thoát</a>
       </div>
     </div>
