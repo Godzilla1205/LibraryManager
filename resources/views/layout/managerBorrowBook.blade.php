@@ -165,16 +165,15 @@ sl-active
 
 @section('scriptBottom')
 <script> 
+	/*---------------------------------- variable -----------------------------------*/
 	var create = document.getElementById('create');
 	var formContent = document.getElementById('form-content');
 	var formHeader = document.getElementById('form-header');
 	var btnCannel = document.getElementById('btnCannel');
-	var tbodyBooks = document.getElementById('tbodyBooks');
 	var codeBorrow = document.getElementById('codeBorrow');
 	var dayBorrow = document.getElementById('dayBorrow');
 	var termBorrow = document.getElementById('termBorrow');
 	var idReader = document.getElementById('idReader');
-	var listSelects = document.getElementById('listSelects');
 	var Book_ids = document.getElementById('Book_ids');
 	
 	// get Date
@@ -188,115 +187,130 @@ sl-active
 	var readers = [];
 	insertReadersArray();
 	var numberListSelect = 5;
+	var bookDBs = [];
 	var books = [];
+	var idBook = -1;
+	var htmlSL = '';
 	var detailBorrows = [];
 	var detailBorrow = [];
+	var BookObjects = [];
+	var addBook = document.getElementById('addBook');
+	var deleteBook = document.getElementById('deleteBook');
+	var editBook = document.getElementById('editBook');
 	insertDBArray();
 	//console.log(books[books.length-1]);
-	
+	/*------------------------------- end variable ---------------------------------*/
+
+
+
+	/*--------------------------------- btn ----------------------------------------*/
 	create.onclick = function(){
-		if(checkReader(idReader.value)){
+		if(checkReader(idReader.value)) {
 			var onDisabled = formHeader;
 			var offDisabled = formContent;
 			onOffDisabled(onDisabled, offDisabled);	
-			insertDBTable();
-			var htmlSL = '';
-			var rowBooks = document.querySelectorAll('#tbodyBooks tr');
+			renderTables();
 			var codeBorrowEnd = document.getElementById('codeBorrowEnd');
 			var codeBook = document.getElementById('codeBook');
 			codeBorrowEnd.value = codeBorrow.value;
 			var giveBook;
-			for (var i = 0; i < rowBooks.length; i++) {
-				var rowBook = rowBooks[i];
-				rowBook.onclick = function() {
-					var idBook = this.firstChild.defaultValue;
-					// console.log(idBook);
-					// console.log(getBook(idBook));
-					giveBook = [getBook(idBook)];
-					// console.log(giveBook)
-					// this.firstChild.defaultValue,
-					// this.cells[0].innerText,
-					// this.cells[1].innerText,
-					// this.cells[5].innerText
-					
-					codeBook.value = giveBook[0].maSoSach;
+			eventRowBooks();
 
-					deActiveRow('.tr-info.row-active');
-					deActiveRow('.nav-item.cursorPointer.row-active');
-					this.classList.add('row-active');
-					enableBtnAdd();
-					disableBtnEdit();
-					disableBtnDelete();
-				}
-
-			}
-
-
-
+			
+			
 
 			codeBook.onkeyup = function() {
-				deActiveRow('.tr-info.row-active');
-				deActiveRow('.nav-item.cursorPointer.row-active');
-				enableBtnAdd();
-				enableBtnEdit();
-				enableBtnDelete();
-			}
-
-			var BookObjects = [];
-			var addBook = document.getElementById('addBook');
-			var deleteBook = document.getElementById('deleteBook');
-			var editBook = document.getElementById('editBook');
-
-			function formatText(str, start, end, replace) {
-				if(str.length>end) {
-					str = str.slice(start,end) + replace;
+				idBook = -1;
+				for (var i = 0; i < books.length; i++) {
+					var book = books[i];
+					if(codeBook.value == book.maSoSach) {
+						idBook = book.id; 
+						giveBook = [getBook(idBook)];
+					}
 				}
-				return str;
+				//console.log(idBook)
+				if(codeBook.value == "") {
+					disableBtnAdd();
+					disableBtnEdit();
+					disableBtnDelete();
+				}else {
+					deActiveRow('.tr-info.row-active');
+					deActiveRow('.nav-item.cursorPointer.row-active');
+					enableBtnAdd();
+					enableBtnEdit();
+					enableBtnDelete();
+				}
 			}
 
+			
 			addBook.onclick = function() {
-				var numberBook = giveBook[0].soLuong;
-				var nameBook = giveBook[0].tenSach;
-				var idBook = giveBook[0].id;
-				nameBook = formatText(nameBook, 0, 20, "...");
-				if(numberBook>0){
-					if(checkDetailBorrows(idBook)){
-						if(checkObject(BookObjects, giveBook)){
-							if(numberListSelect>0){
-								htmlSL += '<li class="nav-item cursorPointer">';
-								htmlSL += '<a class="nav-link" href="javascript:void(0)">';
-								htmlSL += '<span><span class="spanCodeBook">'+ codeBook.value + "</span> | 	" +  nameBook + '</span>';
-								htmlSL += '</a>';
-								htmlSL += '</li>';
-								listSelects.innerHTML = htmlSL;
-								BookObjects.push(giveBook);
-								createSelectItem();
-								addBook_ids(BookObjects);
-								codeBook.value = "";
-								disableBtnAdd();
-								numberListSelect -= 1;
+				//console.log(idBook)
+				if(idBook != -1){
+					var numberBook = giveBook[0].soLuong;
+					var nameBook = giveBook[0].tenSach;
+					idBook = giveBook[0].id;
+					nameBook = formatText(nameBook, 0, 20, "...");
+					if(numberBook>0){
+						if(checkDetailBorrows(idBook)){
+							if(checkObject(BookObjects, giveBook)){
+								if(numberListSelect>0){
+									htmlSL += '<li class="nav-item cursorPointer" data-id='+idBook+'>';
+									htmlSL += '<a class="nav-link" href="javascript:void(0)">';
+									htmlSL += '<span><span class="spanCodeBook">'+ codeBook.value + "</span> | 	" +  nameBook + '</span>';
+									htmlSL += '</a>';
+									htmlSL += '</li>';
+									setHTML('#listSelects', htmlSL);
+									BookObjects.push(giveBook);
+									createSelectItem();
+									addBook_ids(BookObjects);
+									upDownNumberBook(idBook, -1);
+									renderTables();
+									eventRowBooks();
+									codeBook.value = "";
+									giveBook = [];
+									idBook = -1;
+									numberListSelect -= 1;
+								}else {
+									alert('Quá giới hạn cho mượn sách của độc giả này !!!');
+								}
 							}else {
-								alert('Quá giới hạn cho mượn sách của độc giả này !!!');
+								alert('Sách đã được chọn rồi!!!');
 							}
 						}else {
-							alert('Sách đã được chọn rồi!!!');
+							alert('Độc giả đã mượn sách này trước đó !!!');
 						}
-					}else {
-						alert('Độc giả đã mượn sách này trước đó !!!');
-					}
 
+					}else {
+						alert('Số lượng sách đã hết không thể mượn thêm !!!');
+					}	
 				}else {
-					alert('Số lượng sách đã hết không thể mượn thêm !!!');
-				}			
+					alert('Mã sách không đúng !!!');
+				}
 			}
 			
 			
 			deleteBook.onclick = function() {
 				if(codeBook.value !== "") {
 					if(BookObjects == false) {
-						console.log('Không có thằng nào để xóa !!!');
+						alert("Không có thằng nào để xóa !!!");
 					}else {
-						console.log('Xóa theo id');
+						for (var i = 0; i < BookObjects.length; i++) {
+							var BookObject = BookObjects[i];
+							if(BookObject[0].id == idBook){
+								BookObjects.splice(i, 1);
+							}
+						}
+						upDownNumberBook(idBook, 1);
+						renderTables();
+						eventRowBooks();
+						renderlistSelects();
+						idBook = -1;
+						codeBook.value = "";
+						createSelectItem();
+						addBook_ids(BookObjects);
+						numberListSelect += 1;
+						disableBtnEdit();
+						disableBtnDelete();
 					}
 
 				}else {
@@ -304,11 +318,35 @@ sl-active
 				}
 			}
 
-			editBook.onclick = function() {
+			
 
+			editBook.onclick = function() {
+				console.log(idBook);
+				// Sua theo id @@
+				// Neeus xoa thif xoas id di hay xoa object di
 			}
 
 
+			function eventRowBooks() {
+				console.log('vo envet')
+				var rowBooks = document.querySelectorAll('#tbodyBooks tr');
+				console.log(rowBooks)
+				for (var i = 0; i < rowBooks.length; i++) {
+					var rowBook = rowBooks[i];
+					rowBook.onclick = function() {
+						idBook = this.firstChild.defaultValue;
+						giveBook = [getBook(idBook)];
+						codeBook.value = giveBook[0].maSoSach;
+						deActiveRow('.tr-info.row-active');
+						deActiveRow('.nav-item.cursorPointer.row-active');
+						this.classList.add('row-active');
+						enableBtnAdd();
+						disableBtnEdit();
+						disableBtnDelete();
+					}
+
+				}
+			}
 
 		}else {}
 	}
@@ -320,46 +358,13 @@ sl-active
 		deleteDBTable();
 	}
 
-	function addBook_ids(BookObjects){
-		Book_ids.value = "";
-		//console.log(BookObjects)
-		for (var i = 0; i < BookObjects.length; i++) {
-			var BookObject = BookObjects[i];
-			var book_id = BookObject[0];
-			Book_ids.value += book_id + ",";
-		}
-		//console.log(Book_ids.value)
-	}
-
-	function getBook(id) {
-		for (var i = 0; i < books.length; i++) {
-			book = books[i];
-			if(book.id == id) {
-				return book;
-			}else {}
-		}
-		return null;
-	}
-	function enableBtnAdd() {
-		addBook.classList.remove('disabledbutton');
-	}
-	function disableBtnAdd() {
-		addBook.classList.add('disabledbutton');
-	}
-	function enableBtnEdit() {
-		editBook.classList.remove('disabledbutton');
-	}
-	function disableBtnEdit() {
-		editBook.classList.add('disabledbutton');
-	}
-	function enableBtnDelete() {
-		deleteBook.classList.remove('disabledbutton');
-	}
-	function disableBtnDelete() {
-		deleteBook.classList.add('disabledbutton');
-	}
+	/*----------------------------------- end btn ---------------------------------------*/
 
 
+
+
+	/*-----------------------------------------------------------------------------------*/
+	//select item
 	function createSelectItem(){
 		var itemSelects = document.querySelectorAll('.nav-item.cursorPointer');
 		for (var i = 0; i < itemSelects.length; i++) {
@@ -367,6 +372,9 @@ sl-active
 			itemSelect.onclick = function() {
 				var res = this.innerText.split(' | ');
 				codeBook.value = res[0];
+				idBook = this.getAttribute("data-id");
+				//console.log(idBook);
+
 				deActiveRow('.tr-info.row-active');
 				deActiveRow('.nav-item.cursorPointer.row-active');
 				this.classList.add('row-active');
@@ -377,6 +385,45 @@ sl-active
 		}
 	}
 
+
+	// add object
+	function addBook_ids(BookObjects){
+		Book_ids.value = "";
+		//console.log(BookObjects)
+		for (var i = 0; i < BookObjects.length; i++) {
+			var BookObject = BookObjects[i];
+			var book_id = BookObject[0].id;
+			Book_ids.value += book_id + ",";
+		}
+		//console.log(Book_ids.value)
+	}
+
+	// get info book by id
+	function getBook(id) {
+		for (var i = 0; i < books.length; i++) {
+			book = books[i];
+			if(book.id == id) {
+				return book;
+			}else {}
+		}
+		return null;
+	}
+	// changer number book 
+	function upDownNumberBook(id, count) {
+		for (var i = 0; i < books.length; i++) {
+			book = books[i];
+			if(book.id == id) {
+				book.soLuong = Number(book.soLuong) + count;
+			}else {}
+		}
+	}
+
+	/*----------------------------------------------------------------------------------*/
+
+
+
+
+	/*-------------------------------------CHECK----------------------------------------*/
 	function checkObject(BookObjects,giveBook){
 		for (var i = 0; i < BookObjects.length; i++) {
 			var BookObject = BookObjects[i];
@@ -416,50 +463,6 @@ sl-active
 
 	}
 
-
-	function onOffDisabled(on, off) {
-		on.classList.add('disabledbutton');
-		off.classList.remove('disabledbutton');
-	}
-
-	function deActiveRow(selector) {
-		var rowBook = document.querySelectorAll(selector);
-		for (var i = 0; i < rowBook.length; i++) {
-			var rowBook = rowBook[i];
-			rowBook.classList.remove('row-active');
-		}
-	}
-
-	function insertReadersArray(){
-		@foreach($readers as $reader)
-		readers.push({id:"{{$reader['id']}}", maSoDG:"{{$reader['maSoDG']}}"});
-		@endforeach
-	}
-
-	function insertDBArray(){
-		@foreach($books as $book)
-		books.push({
-			id:"{{$book->id}}",
-			maSoSach :"{{$book->maSoSach}}",
-			tenSach :"{{$book->tenSach}}",
-			loaiSach:"{{$book->loaiSach}}",
-			tacGia  :"{{$book->tacGia}}",
-			hoTenNXB:"{{$book->hoTenNXB}}",
-			soLuong:"{{$book->soLuong}}"})
-		@endforeach
-		
-		@foreach($detailBorrows as $detailBorrow)
-		var array = [];
-		@foreach($detailBorrow['maSoSach'] as $maSoSach)
-		array.push({{$maSoSach}});
-		@endforeach
-		detailBorrows.push({
-			maSoDG:"{{$detailBorrow['maSoDG']}}",
-			maSoSach:array
-		})
-		@endforeach
-		console.log(detailBorrows)
-	}
 	function checkDetailBorrows(idBook) {
 		//console.log("id muon:" + idBook);
 		if(detailBorrow['maSoSach'] != null){
@@ -472,8 +475,15 @@ sl-active
 		}
 		return true;
 	}
+	/*---------------------------------- end check -------------------------------------*/
 
-	function insertDBTable(){
+
+	
+
+	/*---------------------------------- render ----------------------------------------*/	
+
+
+	function renderTables() {
 		var html = '';
 		for (var book of books) {
 			html += '<tr class="tr-info">';
@@ -489,16 +499,115 @@ sl-active
 		tbodyBooks.innerHTML = html;
 	}
 
+	function renderlistSelects() {
+		htmlSL = '';
+		for (var i = 0; i < BookObjects.length; i++) {
+			BookObject = BookObjects[i];
+			htmlSL += '<li class="nav-item cursorPointer" data-id='+BookObject[0].id+'>';
+			htmlSL += '<a class="nav-link" href="javascript:void(0)">';
+			htmlSL += '<span><span class="spanCodeBook">'+ BookObject[0].maSoSach + "</span> | 	" +  BookObject[0].tenSach + '</span>';
+			htmlSL += '</a>';
+			htmlSL += '</li>';
+		}
+		setHTML('#listSelects', htmlSL);
+	}
+	/*-------------------------------- end render --------------------------------------*/
+
+
+
+	/*------------------------------- insert by DB -------------------------------------*/
+	function insertReadersArray(){
+		@foreach($readers as $reader)
+		readers.push({id:"{{$reader['id']}}", maSoDG:"{{$reader['maSoDG']}}"});
+		@endforeach
+	}
+
+	function insertDBArray(){
+		@foreach($books as $book)
+		bookDBs.push({
+			id:"{{$book->id}}",
+			maSoSach :"{{$book->maSoSach}}",
+			tenSach :"{{$book->tenSach}}",
+			loaiSach:"{{$book->loaiSach}}",
+			tacGia  :"{{$book->tacGia}}",
+			hoTenNXB:"{{$book->hoTenNXB}}",
+			soLuong:"{{$book->soLuong}}"})
+		@endforeach
+		// put bookDB to one book copy
+		books = bookDBs;
+
+		@foreach($detailBorrows as $detailBorrow)
+		var array = [];
+		@foreach($detailBorrow['maSoSach'] as $maSoSach)
+		array.push({{$maSoSach}});
+		@endforeach
+		detailBorrows.push({
+			maSoDG:"{{$detailBorrow['maSoDG']}}",
+			maSoSach:array
+		})
+		@endforeach
+		//console.log(detailBorrows)
+	}
+	/*--------------------------- end insert by DB ----------------------------------*/
+
+
+
+	/*------------------------ Event button, display --------------------------------*/
+	function deActiveRow(selector) {
+		var rowBook = document.querySelectorAll(selector);
+		for (var i = 0; i < rowBook.length; i++) {
+			var rowBook = rowBook[i];
+			rowBook.classList.remove('row-active');
+		}
+	}
+
 	function deleteDBTable(){
 		var html = '';
-		tbodyBooks.innerHTML = html;
-		htmlSL = '';
-		listSelects.innerHTML = htmlSL;
+		var htmlSL = '';
+		setHTML('#tbodyBooks', html);
+		setHTML('#listSelects', htmlSL);
 		detailBorrow = [];
 		numberListSelect = 5;
 		codeBorrowEnd.value = "";
 		codeBook.value = "";
 	}
+
+	function onOffDisabled(on, off) {
+		on.classList.add('disabledbutton');
+		off.classList.remove('disabledbutton');
+	}
+
+	function formatText(str, start, end, replace) {
+		if(str.length>end) {
+			str = str.slice(start,end) + replace;
+		}
+		return str;
+	}
+
+	function setHTML(selector, html) {
+		var element = document.querySelector(selector);
+		element.innerHTML = html;
+	}
+
+	function enableBtnAdd() {
+		addBook.classList.remove('disabledbutton');
+	}
+	function disableBtnAdd() {
+		addBook.classList.add('disabledbutton');
+	}
+	function enableBtnEdit() {
+		editBook.classList.remove('disabledbutton');
+	}
+	function disableBtnEdit() {
+		editBook.classList.add('disabledbutton');
+	}
+	function enableBtnDelete() {
+		deleteBook.classList.remove('disabledbutton');
+	}
+	function disableBtnDelete() {
+		deleteBook.classList.add('disabledbutton');
+	}
+	/*------------------------ end Event button, display ----------------------------*/
 </script>
 @endsection
 
