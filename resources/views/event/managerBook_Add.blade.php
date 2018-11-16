@@ -125,7 +125,7 @@ sl-active
            <div class="form-group">
             <label class="col-sm-12 control-label" for="">Nội dung tóm lược</label>
             <div class="col-sm-12">
-              <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8"></textarea>
+              <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8" style="height: 211px;width: 160%;"></textarea>
             </div>
           </div>
         </div>

@@ -46,8 +46,12 @@ class EmployeesController extends Controller
         ]);
        $employees['ngaySinhNV'] = date("Y-m-d",strtotime($employees['ngaySinhNV']));
        $employees['ngayVaoLam'] = date("Y-m-d",strtotime($employees['ngayVaoLam']));
-
        employees::create($employees);
+       if($request->hasFile('avatar')) {    
+        $file = $request->file('avatar');
+        $fileName = $file->getClientOriginalName('avatar');
+        $file->move('images/employees', $fileName);
+       } else {}
        return back()->with('success', 'Publisher has been added');
     }
 

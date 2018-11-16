@@ -88,21 +88,21 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
     margin-bottom: 0px; 
   }
   textarea.form-control {
-
     padding-right: 5px;
-    width: 673px;
-
-  }
+    width: 103%;
+}
   select.form-control {
     padding: 2px;
+        padding-left: 2px;
     padding-left: 2px;
     border: 1px solid #ada7a7;
     border-radius: 7px;
     margin-top: 10px;
     padding-left: 10px;
-    width: 314px;
+    width: 105%;
     margin-bottom: 18px;
-  }
+}
+  
   
   .form-border {
     border: 1px solid #a1969680;

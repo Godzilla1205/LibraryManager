@@ -6,7 +6,7 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1">
 	<link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
 	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
-	<link rel="stylesheet" href="{{asset('vendor/3.css')}}">
+	<link rel="stylesheet" href="{{asset('vendor/4.css')}}">
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
 	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
@@ -44,8 +44,8 @@
 					<li class="nav-item @yield("menu-manager-borrowBook")">
 						<a class="nav-link" href="{{route('get.manager.borrowBook')}}"><i class="fa fa-object-group"></i><span>Tạo phiếu mượn</span></a>
 					</li>
-					<li class="nav-item @yield("menu-manager-tra")">
-						<a class="nav-link" href="#"><i class="fa fa-object-group"></i><span>Duyệt phiếu trả</span></a>
+					<li class="nav-item @yield("menu-manager-payBook")">
+						<a class="nav-link" href="{{route('get.manager.payBook')}}"><i class="fa fa-object-group"></i><span>Duyệt phiếu trả</span></a>
 					</li>
 					<li class="nav-item @yield("fage-sider-menu5")">
 						<a href="#menu1" class="nav-link collapsed" data-toggle="collapse" aria-expanded="false">

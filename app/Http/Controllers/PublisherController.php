@@ -7,16 +7,17 @@ use App\publisher;
 
 class PublisherController extends Controller
 {
-     public function getManagerPublisher(){
+    public function getManagerPublisher() {
         $publishers = publisher::all()->toArray();
         $stt = 0;
         return view("layout.managerPublisher",compact('publishers','stt'));
     }
-    public function getManagerPublisher_Add(){
+
+    public function getManagerPublisher_Add() {
         return view("event.managerPublisher_Add");
     }
 
-    public function postManagerPublisher_Add(Request $request){
+    public function postManagerPublisher_Add(Request $request) {
         $publisher = $this->validate(request(), [
             'maSoNXB' =>  'required|min:2|max:100|unique:publishers,maSoNXB',
             'hoTenNXB' => 'required|min:2|max:100',
@@ -28,10 +29,11 @@ class PublisherController extends Controller
         return back()->with('success', 'Publisher has been added');
     }
 
-    public function getManagerPublisher_Edit($id){
+    public function getManagerPublisher_Edit($id) {
          $publisher = publisher::find($id);
          return view('event.managerPublisher_Edit',compact('publisher','id'));
     }
+
     public function postManagerPublisher_Edit(Request $request, $id){
         $publisher = publisher::find($id);
         $this->validate(request(),[
@@ -49,7 +51,8 @@ class PublisherController extends Controller
         $publisher->save();
         return redirect("manager/Publisher/Edit/$id")->with('success','Publisher has been updated');
     }
-    public function getManagerPublisher_Delete($id){
+ 
+    public function getManagerPublisher_Delete($id) {
          $publisher = publisher::find($id);
          $publisher->delete();
          return redirect('manager/Publisher');

@@ -30,7 +30,7 @@ sl-active
   <div class="card-body">
     <h2 class="text-center">Thêm mới nhân viên</h2>
     <br/>  
-    <form action="{{route('post.manager.employees.add')}}" method="POST" class="form-horizontal" role="form">
+    <form action="{{route('post.manager.employees.add')}}" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
       @method('post')
       @csrf
       <div class="row">
@@ -52,7 +52,7 @@ sl-active
             <div class="col-sm-12"><input class="form-control" name="diaChiNV" type="text"></div>
           </div> <!-- end form-group --> 
           <div class="form-group">
-            <label class="col-sm-12 control-label" for="">Ngay Sinh</label>
+            <label class="col-sm-12 control-label" for="">Ngày Sinh</label>
             <div class="col-sm-12"><input class="form-control datepicker-here" name="ngaySinhNV" type="text" data-language='en'></div>
           </div> <!-- end form-group -->
         </div>
@@ -81,7 +81,7 @@ sl-active
         </div>
         <div class="col-sm-4">
           <fieldset class="form-group">
-            <img class="form-control card-img-top img-fluid" src="{{asset('images/FImage.jpg')}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
+            <img class="form-control card-img-top img-fluid" src="{{asset('images/employees/FImage.jpg')}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
             <input type="file" id="avatar" name="avatar" onchange="AutoUpload();">
             <input type="hidden" id="avatarHidden" name="avatarHidden" value="">
           </fieldset>
@@ -127,6 +127,7 @@ sl-active
   function AutoUpload() {
    var avatar = document.getElementById("avatar").value;
    var img = document.getElementById("img");
+   console.log(avatar)
    var res = avatar.split('\\');
    var resImg = img.src.split('/');
    avatar = res[res.length-1];

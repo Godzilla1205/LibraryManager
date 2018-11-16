@@ -537,14 +537,14 @@ sl-active
 		books = bookDBs;
 
 		@foreach($detailBorrows as $detailBorrow)
-		var array = [];
-		@foreach($detailBorrow['maSoSach'] as $maSoSach)
-		array.push({{$maSoSach}});
-		@endforeach
-		detailBorrows.push({
-			maSoDG:"{{$detailBorrow['maSoDG']}}",
-			maSoSach:array
-		})
+			var array = [];
+			@foreach($detailBorrow['maSoSach'] as $maSoSach)
+				array.push({{$maSoSach}});
+			@endforeach
+			detailBorrows.push({
+				maSoDG:"{{$detailBorrow['maSoDG']}}",
+				maSoSach:array
+			})
 		@endforeach
 		//console.log(detailBorrows)
 	}

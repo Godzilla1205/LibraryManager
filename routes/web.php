@@ -47,6 +47,11 @@ Route::get('manager/Readers/Detail/Delete/{id}','ReadersController@getManagerRea
 Route::get('manager/BorrowBook','BorrowBookController@getBorrowBook')->name('get.manager.borrowBook');
 Route::post('manager/BorrowBook','BorrowBookController@postBorrowBook')->name('post.manager.borrowBook');
 
+/*--------------------------------------BorrowBook-------------------------------------------------*/
+
+Route::get('manager/PayBook','PayBookController@getPayBook')->name('get.manager.payBook');
+
+
 
 /*--------------------------------------Publisher--------------------------------------------------*/
 
