@@ -47,115 +47,7 @@ sl-active
 					</div>
 				</div>
 			</div>
-			<form action="{route('post.manager.borrowBook')}}" method="POST" class="form-horizontal" role="form">
-				@method('post')
-				@csrf
-				<div id="form-header" class="row form-border">
-					<div class="col-sm-4">
-						<div class="form-group">
-							<label class="col-sm-12 control-label" for="">Mã Độc Giả</label>
-							<div class="col-sm-12">
-								<input class="form-control" id="codeReader" value="DG002" type="text">
-								<input type="hidden" id="maSoDG" name="maSoDG">
-							</div>
-						</div> <!-- end form-group --> 
-						<div class="form-group">
-							<label class="col-sm-12 control-label">Nhân Viên</label>
-							<div class="col-sm-12">
-								<select class="form-control" name="maSoNV">
-									@foreach($employees as $employee)
-									<option value="{{$employee['id']}}">
-									{{$employee['hoTenNV']}}</option>
-									@endforeach
-								</select>
-							</div>
-						</div> <!-- end form-group -->
-					</div>
-					<div class="col-sm-4 offset-sm-3">
-						<div class="form-group float-right">
-							<div class="col-sm-12">
-								<a href="javascript:void(0)" id="btnCheckReader" class="btn btn-secondary">Kiêm tra</a>
-								<a href="{{route('get.manager')}}" class="btn btn-default">Thoát</a>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div id="form-content-header" class="row form-border disabledbutton">
-					<div class="col-sm-12">
-						<div class="container">
-							<div class="row">
-								<div class="col-sm-3">
-									<span class="form-control-label">Chọn cuốn sách mang trả</span>
-								</div>
-								<div class="col-sm-6">
-									<select class="form-control" id="listBorrowBooks" name="maSoSach">
-										
-									</select>
-								</div>
-								<div class="col-sm-2 offset-1">
-									<a href="javascript:void(0)" id="btnExit" class="btn btn-secondary">Thoát</a>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-				<div id="form-content-bottom" class="row form-border disabledbutton">
-					<div class="col-sm-6">
-						<div class="form-group disabledbutton">
-							<label class="col-sm-12 control-label" for="">Mã Phiếu Mượn</label>
-							<div class="col-sm-12">
-								<input class="form-control" name="soPhieuMuon" id="codeBorrow" type="text">
-							</div>
-						</div> <!-- end form-group -->
-						<div class="form-group disabledbutton">
-							<label class="col-sm-12 control-label" for="">Mã Sách</label>
-							<div class="col-sm-12">
-								<input class="form-control" id="codeBook" type="text">
-							</div>
-						</div> <!-- end form-group -->
-						<div class="form-group">
-							<label class="col-sm-12 control-label" for="">Ngày Mượn</label>
-							<div class="col-sm-12"><input id="dayBorrow" class="form-control datepicker-here" name="ngayMuon" type="text" data-language='en'></div>
-						</div> <!-- end form-group -->
-						<div class="form-group">
-							<label class="col-sm-12 control-label">Tình Trạng</label>
-							<div class="col-sm-12">
-								<select class="form-control" name="maSoNV">
-									foreach($employees as $employee)
-									<option value="{$employee['id']}}">
-									{$employee['hoTenNV']}}</option>
-									endforeach
-								</select>
-							</div>
-						</div> <!-- end form-group -->
-						<div class="form-group float-left">
-							<div class="col-sm-12">
-								<a href="#wrapper" id="btnCannel" class="btn btn-default">Phạt</a>
-							</div>
-						</div>
-					</div>
-					<div class="col-sm-6">
-						<div class="form-group">
-							<label class="col-sm-12 control-label" for="">Ngày Trả</label>
-							<div class="col-sm-12">
-								<input id="termBorrow" class="form-control datepicker-here" name="ngayTra" type="text" data-language='en'>
-							</div>
-						</div> <!-- end form-group -->
-						<div class="form-group">
-							<label class="col-sm-12 control-label" for="">Ghi Chú</label>
-							<div class="col-sm-12">
-								<textarea class="form-control" name="ghiChu" data-maxlength="500" cols="100" rows="8" style="height: 234px;"></textarea>
-							</div>
-						</div>
-						<div class="form-group">
-							<div class="col-sm-12">
-								<input type="submit" id="btnAdd" name="btnAdd" class="btn btn-primary" value="Trả sách">
-								<a href="#wrapper" id="btnCannel" class="btn btn-default">Hủy</a>
-							</div>
-						</div>
-					</div>
-				</div>
-			</form>
+			@yield('form-content')
 		</div>
 	</div>
 </div>
@@ -164,10 +56,11 @@ sl-active
 
 
 @section('scriptBottom')
-<script>
+{{-- <script>
 // create array
 var readers = [];
 var books = [];
+var totalBorrows = [];
 var detailBorrows = [];
 var listBorrows = [];
 var idReader = "";
@@ -180,21 +73,39 @@ var listBorrowBooks = getElement('#listBorrowBooks');
 // get btn
 var btnCheckReader = getElement('#btnCheckReader');
 var btnExit = getElement('#btnExit');
+var btnCannel = getElement('#btnCannel');
 // get form
 var formHeader = getElement('#form-header');
 var formContentHeader = getElement('#form-content-header');
+var formContentBottom = getElement('#form-content-bottom');
 
-console.log(books)
 btnCheckReader.onclick = function() {
 	if(checkReader(codeReader.value)) {
 		disableFormHeader();
 		enableFormContentHeader();
 		listBorrows = getBorrow(idReader);
+		console.log(listBorrows)
+		renderListBorrowBooks(listBorrows);
 	}
 }
 btnExit.onclick = function() {
 	disableFormContentHeader();
 	enableFormHeader();
+}
+btnCannel.onclick = function() {
+	listBorrowBooks.value = -1;
+	enableFormContentHeader();
+	disableFormContentBottom();
+}
+
+listBorrowBooks.onchange = function() {
+	//console.log(listBorrowBooks.value)
+	if(listBorrowBooks.value == -1){
+	} else {
+		enableFormContentBottom();
+		disableFormContentHeader();
+	}
+	
 }
 
 function disableFormHeader() {
@@ -209,7 +120,12 @@ function disableFormContentHeader() {
 function enableFormContentHeader() {
 	formContentHeader.classList.remove('disabledbutton');
 }
-
+function disableFormContentBottom() {
+	formContentBottom.classList.add('disabledbutton');
+}
+function enableFormContentBottom() {
+	formContentBottom.classList.remove('disabledbutton');
+}
 
 function checkReader(codeReader){
 	for (var i = 0; i < readers.length; i++) {
@@ -233,16 +149,22 @@ function setHTML(selector, html) {
 	element.innerHTML = html;
 }
 
+
 /*---------------------------------- render ----------------------------------------*/	
 
-// function renderListBorrowBooks(listBorrow) {
-// 	var html = '';
-// 	for (var i = 0; i < detailBorrows.length; i++) {
-// 		detailBorrow = detailBorrows[i];
-// 		html += '<option value="' + detailBorrow. + '">' + detailBorrow + '</option>';
-// 	}
-// 	setHTML('#listSelects', html);
-// }
+function renderListBorrowBooks(listBorrow) {
+	var html = '<option value="-1">---</option>';
+	for (var i = 0; i < listBorrow.length; i++) {
+		idBorrowBook = listBorrow[i];
+		for (var j = 0; j < books.length; j++) {
+			book = books[j];
+			if(book.id == idBorrowBook){
+				html += '<option value="' + book.id + '">' + book.tenSach + '</option>';
+			}
+		}
+	}
+	setHTML('#listBorrowBooks', html);
+}
 
 //Lấy tất cả dach sách quyển sách của độc giả từ id nhận được khi check thông tin thành công
 function getBorrow(idReader) {
@@ -274,6 +196,14 @@ function insertDBArray(){
 		tenSach :"{{$book['tenSach']}}"})
 	@endforeach
 
+	@foreach($totalBorrows as $totalBorrow)
+	totalBorrows.push({
+		soPhieuMuon:"{{$totalBorrow->soPhieuMuon}}",
+		maSoSach :"{{$totalBorrow->maSoSach}}",
+		ngayMuon :"{{$totalBorrow->ngayMuon}}",
+		trangThai:"{{$totalBorrow->trangThai}}"})
+	@endforeach
+
 	@foreach($detailBorrows as $detailBorrow)
 	var array = [];
 	@foreach($detailBorrow['maSoSach'] as $maSoSach)
@@ -286,7 +216,7 @@ function insertDBArray(){
 	@endforeach
 }
 
-</script>
+</script> --}}
 @endsection
 
 

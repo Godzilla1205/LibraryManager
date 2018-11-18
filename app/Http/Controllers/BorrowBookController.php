@@ -57,8 +57,12 @@ class BorrowBookController extends Controller
         foreach ($readerBorrows as $readerBorrow) {    
               $idReadersBorrow = DB::table('borrow_books')->select('borrow_books.soPhieuMuon','borrow_books.maSoDG')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
                
-              $idBooksBorrow = DB::table('info_borrow_books')->join('borrow_books','borrow_books.id','=','info_borrow_books.soPhieuMuon')->select('info_borrow_books.maSoSach')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
+              $idBooksBorrow = DB::table('info_borrow_books')->join('borrow_books','borrow_books.id','=','info_borrow_books.soPhieuMuon')->select('info_borrow_books.maSoSach')
+              ->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)
+              ->where('info_borrow_books.trangThai','=', '0')
+              ->get(); 
               $listBorrowBooks  = [];
+
               $idReader = getValueObject($idReadersBorrow,'maSoDG');
              
               changObjectToArray($listBorrowBooks, $idBooksBorrow, ['maSoSach']);
@@ -129,7 +133,10 @@ class BorrowBookController extends Controller
        $arrayBookId = ['maSoSach'=>$Book_id];
        $detailBorrowBook = array_merge($infoBorrowBook, $arrayBookId);
        InfoBorrowBooks::create($detailBorrowBook);
+       DB::update('update books set soLuong = (soLuong - 1) where id = :id', ['id' => $Book_id]);
    }
+
+
    return back()->with('success', 'Borrow book has been added');
 }
 }

@@ -19,6 +19,7 @@ class CreatePayBooksTable extends Migration
             $table->integer('maSoSach')->unsigned();
             $table->integer('maSoNV')->unsigned();
             $table->date('ngayTra');
+            $table->string('ghiChu',200)->nullable();
             $table->foreign('soPhieuMuon')->references('id')->on('borrow_books');
             $table->foreign('maSoSach')->references('id')->on('books');
             $table->foreign('maSoNV')->references('id')->on('employees');

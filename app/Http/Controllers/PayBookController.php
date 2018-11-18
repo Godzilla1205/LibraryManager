@@ -8,60 +8,64 @@ use App\employees;
 use App\readers;
 use App\BorrowBooks;
 use App\book;
+use App\PayBook;
 class PayBookController extends Controller
 {
-    public function getPayBook() {
-    	$employees = employees::all()->toArray();
-    	$readers = readers::all()->toArray();
-    	$books = book::all()->toArray();
-    	function changObjectToArray(&$nameArray, $nameObject, $selector) {
-            for ($i = 0; $i <count($nameObject); $i++) {
-                for ($j = 0; $j <count($selector); $j++) {
-                     array_push($nameArray, getValueObject($nameObject, $selector[$j], $i));
-                }
-            }
-        }
-        
-
-        function getValueObject($nameObject, $nameGet, $index = 0) {
-            return $nameObject[$index] -> $nameGet;
-        }
-
-        function setNameKeyArray($nameKey, $value) {
-            return [$nameKey => $value];
-        }
-
-        function dumpArray($nameArray) {
-           echo "<pre>";
-           var_dump ($nameArray);
-           echo "</pre>";
-        }
-
-    	$readerBorrows = DB::select('select maSoDG, Count(*) from borrow_books Group By maSoDG');
-        
-        $borrowBooks = DB::select('select id, soPhieuMuon from borrow_books');
-        
-        $detailBorrows = [];
-        
-        foreach ($readerBorrows as $readerBorrow) {    
-              $idReadersBorrow = DB::table('borrow_books')->select('borrow_books.soPhieuMuon','borrow_books.maSoDG')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
-               
-              $idBooksBorrow = DB::table('info_borrow_books')->join('borrow_books','borrow_books.id','=','info_borrow_books.soPhieuMuon')->select('info_borrow_books.maSoSach')->where('borrow_books.maSoDG','=',$readerBorrow->maSoDG)->get(); 
-              $listBorrowBooks  = [];
-              $idReader = getValueObject($idReadersBorrow,'maSoDG');
-             
-              changObjectToArray($listBorrowBooks, $idBooksBorrow, ['maSoSach']);
-
-              $arrayIdReader = setNameKeyArray('maSoDG', $idReader);
-              $arrayIdBooks = setNameKeyArray('maSoSach', $listBorrowBooks);
-              $arrayBorrowBook = array_merge($arrayIdReader, $arrayIdBooks);
-              array_push($detailBorrows, $arrayBorrowBook);
-        }
-       //        dumpArray($detailBorrows);
-       
-       // die();
+	public function getPayBookContent($maSoDG) {
+		$employees = employees::all()->toArray();
+		$reader = DB::table('readers')->select('id')->where('maSoDG','=',$maSoDG)->get();
+		if(count($reader) > 0) {
+			$idReader = $reader[0]->id;
+			$detailBorrows = DB::table('info_borrow_books')
+			->join('borrow_books','borrow_books.id','=','info_borrow_books.soPhieuMuon')
+			->join('books','books.id','=','info_borrow_books.maSoSach')
+			->select('info_borrow_books.soPhieuMuon','books.tenSach','info_borrow_books.maSoSach as idSach','books.maSoSach','borrow_books.ngayMuon','info_borrow_books.trangThai')
+			->where('borrow_books.maSoDG','=', $idReader)
+			->where('info_borrow_books.trangThai','=', '0')
+			->get(); 
+			if(count($detailBorrows) > 0) {
+				return view('layout.managerPayBookContent',compact('detailBorrows','employees','maSoDG'));
+			}else {
+				return redirect("manager/PayBook")->with('success', 'Độc giả này đã trả hết sách !!!');;
+			}
+		}else {
+			return back()->withErrors('Các cụ bảo là mã độc giả không tồn tại !!!');
+		}
+	}
 
 
-    	return view('layout.managerPayBook',compact('employees','readers','detailBorrows','books'));
-    } 
+	public function postPayBookContent(Request $request, $maSoDG) {
+		$payBook = $this->validate(request(), [
+			'soPhieuMuon' => 'required',
+			'maSoSach'=> 'required',
+			'maSoNV' => 'required',
+			'ngayTra'=> 'required|date',
+			'ghiChu' => 'max:200'
+		]
+		,[
+			'required' => ':attribute không được để trống',
+			'date' => ':attribute không đúng',
+			'max' => ':attribute số ký tự không được lớn hơn :max'
+		],
+		[
+			'soPhieuMuon' => 'Số phiếu mượn',
+			'maSoSach' => 'Mã số sách',
+			'maSoNV' => 'Mã số nhân viên',
+			'ngayTra' => 'Ngày trả',
+			'ghiChu' => 'Ghi chú'
+		]);
+
+		$payBook['ngayTra'] = date("Y-m-d",strtotime($payBook['ngayTra']));
+		PayBook::create($payBook);
+		DB::update('update info_borrow_books set trangThai = 1 where soPhieuMuon = :soPhieuMuon AND maSoSach = :maSoSach ', ['soPhieuMuon' => $request->soPhieuMuon, 'maSoSach' => $request->maSoSach]);
+		DB::update('update books set soLuong = (soLuong + 1) where id = :id', ['id' => $request->maSoSach]);
+
+
+		return redirect("manager/PayBook/$maSoDG")->with('success', 'Trả sách thành công !!!');;
+	} 
+	public function getPayBookHeader() {
+		$employees = employees::all()->toArray();
+		return view('layout.managerPayBookHeader',compact('employees'));
+
+	} 
 }
