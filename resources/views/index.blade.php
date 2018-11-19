@@ -50,63 +50,51 @@
 					</li>
 					<li class="nav-item @yield("menu-manager-borrowGiveBack")">
 						<a href="#menu1" class="nav-link collapsed" data-toggle="collapse" aria-expanded=@section('booleanAria')"false"@show>
-						<i class="far fa-calendar-alt"></i>
-						<span>Quản lý mượn trả</span>
-					</a>
-				</li>
-				<div class="collapse @yield("collapseBorrowGiveBack")" id="menu1">
-					<li class="nav-item @yield("menu-manager-borrowBook")">
-						<a class="nav-link" href="{{route('get.manager.borrowBook')}}" data-parent="#menu1"><i class="fa fa-tasks"></i><span>Mượn sách</span></a>
+							<i class="far fa-calendar-alt"></i>
+							<span>Quản lý mượn trả</span>
+						</a>
 					</li>
-					<li class="nav-item @yield("menu-manager-giveBack")">
-						<a class="nav-link" href="{{route('get.manager.giveBack')}}" data-parent="#menu1"><i class="fa fa-tasks"></i><span>Trả sách</span></a>
+					<div class="collapse @yield("collapseBorrowGiveBack")" id="menu1">
+						<li class="nav-item @yield("menu-manager-borrowBook")">
+							<a class="nav-link" href="{{route('get.manager.borrowBook')}}" data-parent="#menu1"><i class="fa fa-tasks"></i><span>Mượn sách</span></a>
+						</li>
+						<li class="nav-item @yield("menu-manager-giveBack")">
+							<a class="nav-link" href="{{route('get.manager.giveBack')}}" data-parent="#menu1"><i class="fa fa-tasks"></i><span>Trả sách</span></a>
+						</li>
+					</div>
+					<li class="nav-item @yield("menu-manager-statistical")">
+						<a class="nav-link" href="{{route('get.manager.statistical')}}"><i class="fa fa-object-group"></i><span>Thống kê</span></a>
 					</li>
-				</div>
-				<li class="nav-item @yield("menu-manager-statistical")">
-					<a class="nav-link" href="{{route('get.manager.statistical')}}"><i class="fa fa-object-group"></i><span>Thống kê</span></a>
+				</ul>
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item dropdown @yield("menu-admin")">
+						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe"></i> Admin </a>
+						<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-3">
+							<a class="dropdown-item" href="{{route('get.manager.employees')}}">Quản lý nhân viên</a>
+							<a class="dropdown-item" href="#">Quản lý người dùng</a>
+						</a>
+					</div>
 				</li>
+				<li class="nav-item">
+					<a class="nav-link" href="#"><i class="fa fa-envelope"></i> Contact <span class="sr-only">(current)</span></a>
+				</li>
+				@if(Auth::check()) 
+				<li class="nav-item dropdown">
+					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{Auth::user()->name}} </a>
+					<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
+						<a class="dropdown-item" href="user.html">My account</a>
+						<a class="dropdown-item" href="login">logout</a>
+					</div>
+				</li>
+				@endif
 			</ul>
-			<ul class="navbar-nav ml-auto">
-				<li class="nav-item dropdown @yield("menu-admin")">
-					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe"></i> Admin </a>
-					<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-3">
-						<a class="dropdown-item" href="{{route('get.manager.employees')}}">Quản lý nhân viên</a>
-						<a class="dropdown-item" href="#">Quản lý người dùng</a>
-					</a>
-				</div>
-			</li>
-			<li class="nav-item">
-				<a class="nav-link" href="#"><i class="fa fa-envelope"></i> Contact <span class="sr-only">(current)</span></a>
-			</li>
-			<li class="nav-item dropdown">
-				@can('edit-profile')
-				<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> Profile </a>
-				<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
-					<a class="dropdown-item" href="user.html">My account</a>
-					<a class="dropdown-item" href="{{ route('logout') }}"
-					onclick="event.preventDefault();
-					document.getElementById('logout-form').submit();">
-					{{ __('Logout') }}
-				</a>
-
-				<form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-					@csrf
-				</form>
-
-			</div>
-			@endcan
-			@cannot('edit-profile')
-			<a class="nav-link" href="{{route('login')}}"><i class="fa fa-user"></i> Login </a>
-			@endcannot
-		</li>
-	</ul>
-</div>
-</nav>
-<!--/.Navbar -->
-<div class="master-right">
-	@yield('breadcrumb')
-	@yield('content')
-</div>
+		</div>
+	</nav>
+	<!--/.Navbar -->
+	<div class="master-right">
+		@yield('breadcrumb')
+		@yield('content')
+	</div>
 </div>
 <!-- MDB core JavaScript -->
 <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mdbootstrap/4.4.1/js/mdb.min.js"></script>

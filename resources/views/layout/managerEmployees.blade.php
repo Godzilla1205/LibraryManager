@@ -89,7 +89,7 @@ active
     </div>
     @endcan
      @cannot('edit-profile')
-      <h3 class="text-center">Bạn cần phải đăng nhập</h3>
+      <h3 class="text-center">Bạn không có quyền</h3>
      @endcannot
   </div>
 </div>
