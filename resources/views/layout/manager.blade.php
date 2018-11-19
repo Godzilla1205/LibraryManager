@@ -10,8 +10,8 @@
 						<i class="fas fa-shopping-cart"></i>
 					</div>
 					<div class="ml-3">
-						<div class="text-muted small">Vé bán được</div>
-						<div class="text-large">1028</div>
+						<div class="text-muted small">Phiếu mượn trong ngày</div>
+						<div class="text-large">{{$numberBorrowToDay}}</div>
 					</div>
 				</div>
 			</div>
@@ -23,8 +23,8 @@
 						<i class="fa fa-globe"></i>
 					</div>
 					<div class="ml-3">
-						<div class="text-muted small">Lượt truy cập</div>
-						<div class="text-large">23620</div>
+						<div class="text-muted small">Phiếu trả trong ngày</div>
+						<div class="text-large">{{$numberGiveToDay}}</div>
 					</div>
 				</div>
 			</div>
@@ -36,8 +36,8 @@
 						<i class="fas fa-flask"></i>
 					</div>
 					<div class="ml-3">
-						<div class="text-muted small">Trung bình thời lượng</div>
-						<div class="text-large">00:10:13</div>
+						<div class="text-muted small">Phiếu trễ hẹn</div>
+						<div class="text-large">{{$numberDelay}}</div>
 					</div>
 				</div>
 			</div>
@@ -49,8 +49,8 @@
 						<i class="fas fa-user-friends"></i>
 					</div>
 					<div class="ml-3">
-						<div class="text-muted small">Người dùng</div>
-						<div class="text-large">10,540</div>
+						<div class="text-muted small">Số lượng độc giả</div>
+						<div class="text-large">{{$numberReaders}}</div>
 					</div>
 				</div>
 			</div>
@@ -96,4 +96,36 @@ sl-active
 	</li>	
 </ol>
 @endsection
+
+
+
+
+
+@section('scriptBottom')
+<script>
+	Highcharts.chart('statistical0', {
+		title: {
+			text: 'Thống kê theo giờ'
+		},
+
+		subtitle: {
+			text: 'Plain'
+		},
+
+		xAxis: {
+			categories: ['00', '01', '02', '03', '04', '05', '06', '07', '08', '09', '10', '11','12','13','14','15','16','17','18','19','20','21','22','23']
+		},
+
+		series: [{
+			type: 'column',
+			colorByPoint: true,
+			data: [29.9, 71.5, 106.4, 129.2, 144.0, 176.0, 135.6, 148.5, 216.4, 194.1, 200,300,170,400,200,500,100,500,420,500,600,405,600,304],
+			showInLegend: false
+		}]
+
+	});
+</script>
+@endsection
+
+
 

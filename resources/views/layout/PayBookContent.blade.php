@@ -1,4 +1,4 @@
-@extends('layout.managerPayBook')
+@extends('layout.PayBook')
 
 @section('form-content')
 <form action="{{action('PayBookController@postPayBookContent', $maSoDG)}}" method="POST" class="form-horizontal" role="form">
@@ -50,7 +50,7 @@
 						</select>
 					</div>
 					<div class="col-sm-2 offset-1">
-						<a href="{{route('get.manager.payBook')}}" id="btnExit" class="btn btn-secondary">Thoát</a>
+						<a href="{{route('get.payBook')}}" id="btnExit" class="btn btn-secondary">Thoát</a>
 					</div>
 				</div>
 			</div>

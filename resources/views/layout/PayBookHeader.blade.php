@@ -1,4 +1,4 @@
-@extends('layout.managerPayBook')
+@extends('layout.PayBook')
 
 @section('form-content')
 <form action="" method="POST" class="form-horizontal" role="form">

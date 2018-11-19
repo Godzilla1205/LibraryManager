@@ -11,6 +11,13 @@ use App\book;
 use App\PayBook;
 class PayBookController extends Controller
 {
+	public function getManagerGiveBack() {
+		$payBooks = DB::table('pay_books')
+		->join('books','pay_books.maSoSach','=','books.id')
+		->join('employees','pay_books.maSoNV','=','employees.id')
+		->select('pay_books.id','pay_books.soPhieuMuon','books.maSoSach','employees.maSoNV','pay_books.ngayTra','pay_books.ghiChu')->get(); 
+		return view('layout.managerGiveBack',compact('payBooks'));
+	}
 	public function getPayBookContent($maSoDG) {
 		$employees = employees::all()->toArray();
 		$reader = DB::table('readers')->select('id')->where('maSoDG','=',$maSoDG)->get();
@@ -24,9 +31,9 @@ class PayBookController extends Controller
 			->where('info_borrow_books.trangThai','=', '0')
 			->get(); 
 			if(count($detailBorrows) > 0) {
-				return view('layout.managerPayBookContent',compact('detailBorrows','employees','maSoDG'));
+				return view('layout.PayBookContent',compact('detailBorrows','employees','maSoDG'));
 			}else {
-				return redirect("manager/PayBook")->with('success', 'Độc giả này đã trả hết sách !!!');;
+				return redirect("PayBook")->with('success', 'Độc giả này đã trả hết sách !!!');;
 			}
 		}else {
 			return back()->withErrors('Các cụ bảo là mã độc giả không tồn tại !!!');
@@ -61,11 +68,11 @@ class PayBookController extends Controller
 		DB::update('update books set soLuong = (soLuong + 1) where id = :id', ['id' => $request->maSoSach]);
 
 
-		return redirect("manager/PayBook/$maSoDG")->with('success', 'Trả sách thành công !!!');;
+		return redirect("PayBook/$maSoDG")->with('success', 'Trả sách thành công !!!');;
 	} 
 	public function getPayBookHeader() {
 		$employees = employees::all()->toArray();
-		return view('layout.managerPayBookHeader',compact('employees'));
+		return view('layout.PayBookHeader',compact('employees'));
 
 	} 
 }

@@ -20,7 +20,7 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-Route::get('manager','MyController@getManager')->name('get.manager');
+Route::get('manager','ManagerController@getManager')->name('get.manager');
 
 /*--------------------------------------Book-----------------------------------------------------*/
 
@@ -44,20 +44,26 @@ Route::get('manager/Readers/Detail/Delete/{id}','ReadersController@getManagerRea
 
 /*--------------------------------------BorrowBook-------------------------------------------------*/
 
-Route::get('manager/BorrowBook','BorrowBookController@getBorrowBook')->name('get.manager.borrowBook');
-Route::post('manager/BorrowBook','BorrowBookController@postBorrowBook')->name('post.manager.borrowBook');
+Route::get('BorrowBook','BorrowBookController@getBorrowBook')->name('get.borrowBook');
+Route::post('BorrowBook','BorrowBookController@postBorrowBook')->name('post.borrowBook');
+
+Route::get('manager/BorrowBook','BorrowBookController@getManagerBorrowBook')->name('get.manager.borrowBook');
+Route::get('manager/BorrowBook/{id}','BorrowBookController@Show')->name('get.manager.giveBack.show');
+Route::get('manager/GiveBack','PayBookController@getManagerGiveBack')->name('get.manager.giveBack');
 
 /*--------------------------------------Pay Book-------------------------------------------------*/
 
-Route::get('manager/PayBook','PayBookController@getPayBookHeader')->name('get.manager.payBook');
-Route::get('manager/PayBook/{maSoDG}','PayBookController@getPayBookContent')->name('get.manager.payBookContent');
-Route::post('manager/PayBook/{maSoDG}','PayBookController@postPayBookContent')->name('post.manager.payBookContent');
+Route::get('PayBook','PayBookController@getPayBookHeader')->name('get.payBook');
+Route::get('PayBook/{maSoDG}','PayBookController@getPayBookContent')->name('get.payBookContent');
+Route::post('PayBook/{maSoDG}','PayBookController@postPayBookContent')->name('post.payBookContent');
 
 
 
 /*--------------------------------------Publisher--------------------------------------------------*/
 
+
 Route::get('manager/Publisher','PublisherController@getManagerPublisher')->name('get.manager.publisher');
+
 Route::get('manager/Publisher/Add','PublisherController@getManagerPublisher_Add')->name('get.manager.publisher.add');
 Route::get('manager/Publisher/Edit/{id}','PublisherController@getManagerPublisher_Edit')->name('get.manager.publisher.edit');
 Route::get('manager/Publisher/Delete/{id}','PublisherController@getManagerPublisher_Delete')->name('get.manager.publisher.delete');
@@ -70,3 +76,6 @@ Route::get('manager/Employees','EmployeesController@getManagerEmployees')->name(
 Route::get('manager/Employees/Add','EmployeesController@getManagerEmployees_Add')->name('get.manager.employees.add');
 Route::post('manager/Employees/Add','EmployeesController@postManagerEmployees_Add')->name('post.manager.employees.add');
 
+
+/*--------------------------------------Statistical-----------------------------------------------*/
+Route::get('manager/statistical','StatisticalController@getStatistical')->name('get.manager.statistical');
