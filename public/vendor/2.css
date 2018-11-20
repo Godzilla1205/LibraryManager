@@ -255,7 +255,7 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
   }
 
   .navbar-nav.side-nav{
-    background: #495056;
+    background: #252a32;
     box-shadow: 2px 1px 2px rgba(0,0,0,.1);
     position:fixed;
     top: 50px;
@@ -268,15 +268,15 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
   }
 
   ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item {
-    border-bottom: 0.3px solid #3f444a;
+    /*! border-bottom: 0.3px solid #3f444a; */
   }
 
   div#menu1 {
-    background-color: #3e4348;
+    background-color: #262a2f;
   }
 
   ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item:hover>a {
-    background-color: #292b2f;
+    background-color: #323439;
     border-left: 3px solid #2b85c5;
   }
   ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a {
@@ -286,7 +286,7 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
 
   li.nav-item.sm-active>a {
 
-    background-color: #292b2f;
+    background-color: #3b3c3e;
   }
   li.nav-item.sm-active>a::after {
     content: "\f0da";
@@ -415,7 +415,7 @@ ul.navbar-nav.animate.side-nav.page-sider-menu a.nav-link.waves-effect.waves-lig
     }
 
     .name-user {
-      color: #8d2db7;
+      color: #190f1e;
       margin-top: -191px;
     }
 

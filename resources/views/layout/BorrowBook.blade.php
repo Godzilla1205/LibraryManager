@@ -61,7 +61,7 @@ sl-active
 						<div class="form-group">
 							<label class="col-sm-12 control-label" for="">Mã Độc Giả</label>
 							<div class="col-sm-12">
-								<input class="form-control" id="idReader" value="DG002" type="text">
+								<input class="form-control" id="idReader" value="" type="text">
 								<input type="hidden" id="maSoDG" name="maSoDG">
 							</div>
 						</div> <!-- end form-group --> 

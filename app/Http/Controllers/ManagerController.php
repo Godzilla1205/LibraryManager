@@ -63,6 +63,41 @@ class ManagerController extends Controller
 		//echo $numberDelay;
 		$numberReaders = count($readers);
 
-		return view("layout.manager",compact('numberBorrowToDay','numberGiveToDay','numberDelay','numberReaders'));
+		$borrowBooks = BorrowBooks::all()->toArray();
+	
+		function checkMonth($month, &$yeah) {
+			$number = 1;
+			for ($i = 0; $i < count($yeah); $i++) {
+				if($month == $number) {
+					$yeah[$i]++;
+				}
+				$number++;
+			}
+		}
+
+		$yeahBorow2018 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		foreach ($borrowBooks as $borrowBook) {   
+			$month = date("m", strtotime($borrowBook['ngayMuon'])); 
+			checkMonth($month, $yeahBorow2018);
+		}
+		//var_dump ($yeahBorow2018);
+		$strYeahBorow2018 = implode(',', $yeahBorow2018);
+
+
+
+		// trả
+
+	
+
+		$yeahGiveBook2018 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		foreach ($payBooks as $payBook) {   
+			$month = date("m", strtotime($payBook->ngayTra)); 
+			checkMonth($month, $yeahGiveBook2018);
+		}
+		//var_dump ($yeah2018);
+		$strYeahGiveBook2018 = implode(',', $yeahGiveBook2018);
+
+
+		return view("layout.manager",compact('numberBorrowToDay','numberGiveToDay','numberDelay','numberReaders','strYeahBorow2018','strYeahGiveBook2018'));
 	}
 }

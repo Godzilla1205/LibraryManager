@@ -19,7 +19,7 @@ active
     <a href="{{route('get.manager.employees')}}">Quản lý nhân viên</a>
   </li>
   <li class="breadcrumb-item active">
-    Thêm mới
+    Sửa thông tin
   </li> 
 </ol>
 @endsection
@@ -28,7 +28,7 @@ active
 <div class="container-fluid">
  <div class="card">
   <div class="card-body">
-    <h2 class="text-center">Thêm mới nhân viên</h2>
+    <h2 class="text-center">Sửa thông tin nhân viên</h2>
     <br/> 
     <div class="container">
       <div class="row">
@@ -36,7 +36,7 @@ active
           @if ($errors->any())
           <div class="alert alert-danger alert-dismissible">
             <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-            <ul>
+             <ul>
               @foreach ($errors->all() as $error)
               <li>{{ $error }}</li>
               @endforeach
@@ -52,7 +52,7 @@ active
         </div>
       </div>
     </div> 
-    <form action="{{route('post.manager.employees.add')}}" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
+    <form action="{{action('EmployeesController@postManagerEmployees_Edit',$id)}}" method="POST" class="form-horizontal" enctype="multipart/form-data" role="form">
       @method('post')
       @csrf
       <div class="row">
@@ -60,22 +60,22 @@ active
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Mã Số NV</label>
             <div class="col-sm-12">
-              <input class="form-control" name="maSoNV" type="text">
+              <input class="form-control" name="maSoNV" value="{{$employee['maSoNV']}}" type="text">
             </div>
           </div> <!-- end form-group -->
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Họ Tên NV</label>
             <div class="col-sm-12">
-              <input class="form-control" name="hoTenNV" type="text">
+              <input class="form-control" name="hoTenNV" value="{{$employee['hoTenNV']}}" type="text">
             </div>
           </div> <!-- end form-group --> 
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Địa Chỉ</label>
-            <div class="col-sm-12"><input class="form-control" name="diaChiNV" type="text"></div>
+            <div class="col-sm-12"><input class="form-control" name="diaChiNV" value="{{$employee['diaChiNV']}}" type="text"></div>
           </div> <!-- end form-group --> 
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Ngày Sinh</label>
-            <div class="col-sm-12"><input class="form-control datepicker-here" name="ngaySinhNV" type="text" data-language='en'></div>
+            <div class="col-sm-12"><input class="form-control datepicker-here" value="{{$employee['ngaySinhNV']}}" name="ngaySinhNV" type="text" data-language='en'></div>
           </div> <!-- end form-group -->
         </div>
         <div class="col-sm-4">
@@ -83,36 +83,36 @@ active
             <div class="col-sm-12">
               <label class="control-label">Giới Tính</label>
               <select class="form-control" name="gioiTinhNV">
-                <option value="1">Nam</option>
-                <option value="0">Nữ</option>
+                <option @if( $employee['gioiTinhNV'] == 1 ){{'selected'}}@endif value="1">Nam</option>
+                <option @if( $employee['gioiTinhNV'] == 0 ){{'selected'}}@endif value="0">Nữ</option>
               </select>
             </div>
           </div> <!-- end form-group -->
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Số Điện Thoại</label>
-            <div class="col-sm-12"><input class="form-control" name="soDTNV" type="text"></div>
+            <div class="col-sm-12"><input class="form-control" value="{{$employee['soDTNV']}}" name="soDTNV" type="text"></div>
           </div> <!-- end form-group -->
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Email</label>
-            <div class="col-sm-12"><input class="form-control" name="emailNV" type="text"></div>
+            <div class="col-sm-12"><input class="form-control" value="{{$employee['emailNV']}}" name="emailNV" type="text"></div>
           </div> <!-- end form-group -->
           <div class="form-group">
             <label class="col-sm-12 control-label" for="">Ngày Vào làm</label>
-            <div class="col-sm-12"><input class="form-control datepicker-here" name="ngayVaoLam" type="text" data-language='en'></div>
+            <div class="col-sm-12"><input class="form-control datepicker-here" value="{{$employee['ngayVaoLam']}}" name="ngayVaoLam" type="text" data-language='en'></div>
           </div> <!-- end form-group -->
         </div>
         <div class="col-sm-4">
           <fieldset class="form-group">
-            <img class="form-control card-img-top img-fluid" src="{{asset('images/employees/FImage.jpg')}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
+            <img class="form-control card-img-top img-fluid" src="{{asset('images/employees')."/".$employee['avatar']}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
             <input type="file" id="avatar" name="fileAvatar" onchange="AutoUpload();">
-            <input type="hidden" id="avatarHidden" name="avatar" value="">
+            <input type="hidden" id="avatarHidden" name="avatar" value="{{$employee['avatar']}}">
           </fieldset>
         </div>
       </div>
       <div class="row">
         <div class="col-sm-12 col-sm-offset-5">
           <div class="form-group">
-            <input type="submit" name="btnAdd" class="btn btn-primary" value="Thêm">
+            <input type="submit" name="btnAdd" class="btn btn-primary" value="Sửa">
             <a href="{{route('get.manager.employees')}}" class="btn btn-default">Thoát</a>
           </div> <!-- end form-group -->
         </div>
@@ -126,7 +126,7 @@ active
 
 @section('scriptBottom')
 <script> 
-  function AutoUpload() {
+ function AutoUpload() {
    var avatar = document.getElementById("avatar").value;
    var img = document.getElementById("img");
    var avatarHidden = document.getElementById("avatarHidden");

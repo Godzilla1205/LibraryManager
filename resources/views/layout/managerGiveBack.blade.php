@@ -66,8 +66,8 @@ sm-active
             <td>{{$payBook->ngayTra}}</td>
             <td>{{$payBook->ghiChu}}</td>
             <td class="action-button">
-              <a class="btn btn-primary" href="{action('PublisherControllergetManagerPublisher_Edit',$publisher['id'])}}"><i class="fa fa-edit"></i></a>
-              <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" href="{action('PublisherControllergetManagerPublisher_Delete',$publisher['id'])}}"><i class="fa fa-trash"></i></a>
+              <a class="btn btn-primary" href="#"><i class="fa fa-edit"></i></a>
+              <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" href="{{action('PayBookController@getManagerGiveBack_Delete',$payBook->id)}}"><i class="fa fa-trash"></i></a>
             </td>
           </tr>
           @endforeach

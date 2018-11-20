@@ -28,6 +28,7 @@ class StatisticalController extends Controller
 		// 	}
 
 		// }
+		$payBooks = DB::select('select soPhieuMuon, ngayTra, Count(*) from pay_books Group By soPhieuMuon,ngayTra');
 
 		function checkMonth($month, &$yeah) {
 			$number = 1;
@@ -49,6 +50,15 @@ class StatisticalController extends Controller
 		//var_dump ($yeah2018);
 		$strYeah2018 = implode(',', $yeah2018);
 
-		return view('layout.managerStatistical',compact('strYeah2018'));
+
+		$yeahGiveBook2018 = [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0];
+		foreach ($payBooks as $payBook) {   
+			$month = date("m", strtotime($payBook->ngayTra)); 
+			checkMonth($month, $yeahGiveBook2018);
+		}
+		//var_dump ($yeah2018);
+		$strYeahGiveBook2018 = implode(',', $yeahGiveBook2018);
+
+		return view('layout.managerStatistical',compact('strYeah2018','strYeahGiveBook2018'));
 	}
 }

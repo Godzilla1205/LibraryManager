@@ -31,7 +31,7 @@ sl-active
           @if ($errors->any())
           <div class="alert alert-danger alert-dismissible">
             <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
-             <ul>
+            <ul>
               @foreach ($errors->all() as $error)
               <li>{{ $error }}</li>
               @endforeach
@@ -47,7 +47,7 @@ sl-active
         </div>
       </div>
     </div> 
-    <form action="{{action('BookController@postManagerBook_Edit',$id)}}" method="POST" class="form-horizontal" role="form">
+    <form action="{{action('BookController@postManagerBook_Edit', $id)}}" method="POST" class="form-horizontal" role="form">
       @method('post')
       @csrf
       <div class="row">
@@ -123,25 +123,24 @@ sl-active
         </div>
       </div>
       <div class="row">
-          <div class="col-sm-8">
-           <div class="form-group">
-            <label class="col-sm-12 control-label" for="">Nội dung tóm lược</label>
-            <div class="col-sm-12">
-              <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8" style="height: 211px;width: 160%;">{{$book['noiDungTomLuoc']}}</textarea>
-            </div>
+        <div class="col-sm-8">
+         <div class="form-group">
+          <label class="col-sm-12 control-label" for="">Nội dung tóm lược</label>
+          <div class="col-sm-12">
+            <textarea class="form-control" name="noiDungTomLuoc" data-maxlength="500" cols="100" rows="8" style="height: 211px;width: 160%;">{{$book['noiDungTomLuoc']}}</textarea>
           </div>
         </div>
       </div>
     </div>
+  </div>
   <div class="col-sm-4">
     <fieldset class="form-group">
-      <img class="form-control card-img-top img-fluid" src="{{asset('images')."/".$book['linkAnh']}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
-      <input type="file" id="avatar" onchange="AutoUpload();">
+      <img class="form-control card-img-top img-fluid" src="{{asset('images/')."/".$book['linkAnh']}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
+      <input type="file" id="avatar" name="fileAvatar" onchange="AutoUpload();">
       <input type="hidden" id="avatarHidden" name="linkAnh" value="{{$book['linkAnh']}}">
     </fieldset>
   </div>
 </div>
-
 <div class="row">
   <div class="col-sm-8">
     <div class="form-group">
@@ -161,7 +160,7 @@ sl-active
 
 @section('scriptBottom')
 <script> 
-  function AutoUpload() {
+ function AutoUpload() {
    var avatar = document.getElementById("avatar").value;
    var img = document.getElementById("img");
    var avatarHidden = document.getElementById("avatarHidden");

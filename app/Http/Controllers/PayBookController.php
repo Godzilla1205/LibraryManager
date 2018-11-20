@@ -73,6 +73,13 @@ class PayBookController extends Controller
 	public function getPayBookHeader() {
 		$employees = employees::all()->toArray();
 		return view('layout.PayBookHeader',compact('employees'));
-
 	} 
+
+	public function getManagerGiveBack_Delete($id) {
+		$payBook = PayBook::find($id);
+		$payBook->delete();
+		return back();
+	} 
+
+	
 }

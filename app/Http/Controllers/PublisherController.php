@@ -35,9 +35,10 @@ class PublisherController extends Controller
     }
 
     public function postManagerPublisher_Edit(Request $request, $id){
+        //|unique:publishers,maSoNXB
         $publisher = publisher::find($id);
         $this->validate(request(),[
-            'maSoNXB' =>  'required|min:2|max:100|unique:publishers,maSoNXB',
+            'maSoNXB' =>  'required|min:2|max:100',
             'hoTenNXB' => 'required|min:2|max:100',
             'diaChiNXB' => 'max:200',
             'websiteNXB' => 'max:200',

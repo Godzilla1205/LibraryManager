@@ -18,7 +18,6 @@ active
 @section('content')
 <div class="container-fluid">
   <div class="card">
-    @can('edit-profile')
       <div class="card-body">
       <div class="portlet-title">
         <div class="row">
@@ -80,17 +79,14 @@ active
               <td>{{$employees['gioiTinhNV']}}</td>
               <td>{{$employees['soDTNV']}}</td>
               <td class="action-button">
-                <a class="btn btn-success" href="#">Info</a>
+                 <a class="btn btn-primary" href="{{action('EmployeesController@getManagerEmployees_Edit',$employees['id'])}}"><i class="fa fa-edit"></i></a>
+                <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" href="{{action('EmployeesController@getManagerEmployees_Delete',$employees['id'])}}"><i class="fa fa-trash"></i></a>
               </td>
             </tr>
            @endforeach
         </tbody>
       </table>
     </div>
-    @endcan
-     @cannot('edit-profile')
-      <h3 class="text-center">Bạn không có quyền</h3>
-     @endcannot
   </div>
 </div>
 @endsection

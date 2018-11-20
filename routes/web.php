@@ -30,6 +30,7 @@ Route::group(['prefix'=>'manager','middleware'=>'login'], function() {
 		Route::get('Delete/{id}','BookController@getManagerBook_Delete')->name('get.manager.book.delete');
 		Route::post('Add','BookController@postManagerBook_Add')->name('post.manager.book.add');
 		Route::post('Edit/{id}','BookController@postManagerBook_Edit')->name('post.manager.book.edit');
+		Route::post('','BookController@postManagerBook_Search')->name('post.manager.book.search');
 	});
 
 	route::group(['prefix'=>'Readers'], function() {
@@ -57,6 +58,7 @@ Route::group(['prefix'=>'manager','middleware'=>'login'], function() {
 		Route::get('create','PayBookController@getPayBookHeader')->name('get.payBook');
 		Route::get('create/{maSoDG}','PayBookController@getPayBookContent')->name('get.payBookContent');
 		Route::post('create/{maSoDG}','PayBookController@postPayBookContent')->name('post.payBookContent');
+		Route::get('delete/{id}','PayBookController@getManagerGiveBack_Delete')->name('get.manager.giveBack.delete');
 	});
 
 	route::group(['prefix'=>'Publisher'],function() {
@@ -73,6 +75,9 @@ Route::group(['prefix'=>'manager','middleware'=>'login'], function() {
 			Route::get('','EmployeesController@getManagerEmployees')->name('get.manager.employees');
 			Route::get('Add','EmployeesController@getManagerEmployees_Add')->name('get.manager.employees.add');
 			Route::post('Add','EmployeesController@postManagerEmployees_Add')->name('post.manager.employees.add');
+			Route::get('Edit/{id}','EmployeesController@getManagerEmployees_Edit')->name('get.manager.employees.edit');
+			Route::post('Edit/{id}','EmployeesController@postManagerEmployees_Edit')->name('post.manager.employees.edit');
+			Route::get('Delete/{id}','EmployeesController@getManagerEmployees_Delete')->name('get.manager.employees.delete');
 		});
 
 		route::group(['prefix'=>'users'],function() {

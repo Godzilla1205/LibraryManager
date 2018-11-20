@@ -136,7 +136,7 @@ sl-active
   <div class="col-sm-4">
     <fieldset class="form-group">
       <img class="form-control card-img-top img-fluid" src="{{asset('images/FImage.jpg')}}" id="img" style="height: auto; width: 300px; margin-top:20px; ">
-      <input type="file" id="avatar" onchange="AutoUpload();">
+      <input type="file" id="avatar" name="fileAvatar" onchange="AutoUpload();">
       <input type="hidden" id="avatarHidden" name="linkAnh" value="FImage.jpg">
     </fieldset>
   </div>
