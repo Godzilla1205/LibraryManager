@@ -88,7 +88,7 @@ class ReadersController extends Controller
            return redirect('manager/Readers');
         }
         catch (\Exception $e) {
-             return back()->withErrors('Các cụ bảo là xóa hộ bố mày cái !!!');
+             return back()->withErrors('Không thể xóa !!!');
         }
     }
 

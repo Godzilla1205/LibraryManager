@@ -102,6 +102,11 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
     width: 105%;
     margin-bottom: 18px;
   }
+
+  .detail-user {
+    color: #b64be6; 
+    font-size: 16px;
+  }
   
   
   .form-border {
@@ -183,16 +188,16 @@ ul.navbar-nav.animate.side-nav.page-sider-menu li.nav-item a.nav-link[aria-expan
   .modal-footer{padding:15px;text-align:right;border-top:1px solid #e5e5e5}
   .modal-footer::after{content:"";display:table;clear:both}
   .modal-scrollbar-measure{position:absolute;top:-9999px;width:50px;height:50px;overflow:scroll}
- 
+  
 }
 
- @media (min-width:576px){
-    .modal-dialog{max-width:600px;margin:30px auto}
-    .modal-sm{max-width:300px}
-  }
-  @media (min-width:992px){
-    .modal-lg{max-width:900px}
-  }
+@media (min-width:576px){
+  .modal-dialog{max-width:600px;margin:30px auto}
+  .modal-sm{max-width:300px}
+}
+@media (min-width:992px){
+  .modal-lg{max-width:900px}
+}
 
 
 
@@ -410,7 +415,7 @@ ul.navbar-nav.animate.side-nav.page-sider-menu a.nav-link.waves-effect.waves-lig
     }
 
     .name-user {
-      color: black;
+      color: #8d2db7;
       margin-top: -191px;
     }
 

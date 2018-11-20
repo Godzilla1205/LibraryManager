@@ -15,18 +15,14 @@ Route::get('/', function () {
 	return view('welcome');
 });
 
-Route::get('login','LoginController@getAdminLogin');
+Route::get('login','LoginController@getAdminLogin')->name('get.login');
+Route::get('logout','LoginController@getAdminLogout')->name('get.logout');
 Route::post('login','LoginController@postAdminLogin');
 
-Route::get('BorrowBook','BorrowBookController@getBorrowBook')->name('get.borrowBook');
-Route::post('BorrowBook','BorrowBookController@postBorrowBook')->name('post.borrowBook');
-Route::get('PayBook','PayBookController@getPayBookHeader')->name('get.payBook');
-Route::get('PayBook/{maSoDG}','PayBookController@getPayBookContent')->name('get.payBookContent');
-Route::post('PayBook/{maSoDG}','PayBookController@postPayBookContent')->name('post.payBookContent');
-
-
-Route::group(['prefix'=>'manager'], function() {
+Route::group(['prefix'=>'manager','middleware'=>'login'], function() {
 	Route::get('','ManagerController@getManager')->name('get.manager');
+
+
 	Route::group(['prefix'=>'Book'], function() {
 		Route::get('','BookController@getManagerBook')->name('get.manager.book');
 		Route::get('Add','BookController@getManagerBook_Add')->name('get.manager.book.add');
@@ -49,11 +45,18 @@ Route::group(['prefix'=>'manager'], function() {
 
 	route::group(['prefix'=>'BorrowBook'], function() {
 		Route::get('','BorrowBookController@getManagerBorrowBook')->name('get.manager.borrowBook');
-		Route::get('{id}','BorrowBookController@Show')->name('get.manager.giveBack.show');
+		Route::get('detail/{id}','BorrowBookController@Show')->name('get.manager.giveBack.show');
+
+		Route::get('create','BorrowBookController@getBorrowBook')->name('get.borrowBook');
+		Route::post('create','BorrowBookController@postBorrowBook')->name('post.borrowBook');
 	});
+
 
 	route::group(['prefix'=>'GiveBack'],function() {
 		Route::get('','PayBookController@getManagerGiveBack')->name('get.manager.giveBack');
+		Route::get('create','PayBookController@getPayBookHeader')->name('get.payBook');
+		Route::get('create/{maSoDG}','PayBookController@getPayBookContent')->name('get.payBookContent');
+		Route::post('create/{maSoDG}','PayBookController@postPayBookContent')->name('post.payBookContent');
 	});
 
 	route::group(['prefix'=>'Publisher'],function() {
@@ -65,10 +68,26 @@ Route::group(['prefix'=>'manager'], function() {
 		Route::post('Edit/{id}','PublisherController@postManagerPublisher_Edit')->name('post.manager.publisher.edit');
 	});
 
-	route::group(['prefix'=>'Employees'],function() {
-		Route::get('','EmployeesController@getManagerEmployees')->name('get.manager.employees');
-		Route::get('Add','EmployeesController@getManagerEmployees_Add')->name('get.manager.employees.add');
-		Route::post('Add','EmployeesController@postManagerEmployees_Add')->name('post.manager.employees.add');
+	route::group(['prefix'=>'admin','middleware'=>'admin'],function() {
+		route::group(['prefix'=>'Employees'],function() {
+			Route::get('','EmployeesController@getManagerEmployees')->name('get.manager.employees');
+			Route::get('Add','EmployeesController@getManagerEmployees_Add')->name('get.manager.employees.add');
+			Route::post('Add','EmployeesController@postManagerEmployees_Add')->name('post.manager.employees.add');
+		});
+
+		route::group(['prefix'=>'users'],function() {
+			Route::get('','UsersController@getManagerUsers')->name('get.manager.users');
+			Route::get('Add','UsersController@getManagerUsers_Add')->name('get.manager.users.add');
+			Route::post('Add','UsersController@postManagerUsers_Add')->name('post.manager.users.add');
+			Route::get('detail/{id}','UsersController@Show')->name('get.manager.users.show');
+			Route::get('Delete/{id}','UsersController@getManagerUsers_Delete')->name('get.manager.users.delete');
+		});
+	});
+
+
+	Route::group(['prefix'=>'user'], function() {
+		Route::get('','UsersController@getUser')->name('get.user');
+		
 	});
 
 	Route::get('statistical','StatisticalController@getStatistical')->name('get.manager.statistical');

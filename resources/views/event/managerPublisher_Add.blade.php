@@ -24,6 +24,28 @@ sl-active
   <div class="card-body">
     <h2 class="text-center">Thêm mới nhà xuất bản</h2>
     <br/>  
+    <div class="container">
+      <div class="row">
+        <div class="col-md-12">
+          @if ($errors->any())
+          <div class="alert alert-danger alert-dismissible">
+            <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+             <ul>
+              @foreach ($errors->all() as $error)
+              <li>{{ $error }}</li>
+              @endforeach
+            </ul>
+          </div><br />
+          @endif
+          @if (Session::has('success'))
+          <div class="alert alert-success alert-dismissible">
+            <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success!</strong> {{ Session::get('success') }}
+          </div>
+          @endif
+        </div>
+      </div>
+    </div> 
     <form action="{{route('post.manager.publisher.add')}}" method="POST" class="form-horizontal" role="form">
       @method('post')
       @csrf
@@ -58,26 +80,6 @@ sl-active
         </div>
       </div> <!-- end form-group -->
     </form>
-  </div>
-  <div class="container">
-    <div class="row">
-      <div class="col-md-5">
-        @if ($errors->any())
-          <div class="alert alert-danger">
-            <ul>
-              @foreach ($errors->all() as $error)
-                <li>{{ $error }}</li>
-              @endforeach
-            </ul>
-          </div><br />
-        @endif
-        @if (Session::has('success'))
-          <div class="alert alert-success">
-            <p>{{ Session::get('success') }}</p>
-          </div><br />
-        @endif
-      </div>
-    </div>
   </div>
 </div>
 </div>

@@ -24,7 +24,7 @@ class BorrowBookController extends Controller
    return view('layout.managerBorrowBook',compact('borrowBooks'));
  }
 
- public function Show($id){
+ public function Show($id) {
   $borrowBooks = DB::table('borrow_books')
   ->join('readers','borrow_books.maSoDG','=','readers.id')
   ->join('employees','borrow_books.maSoNV','=','employees.id')
@@ -41,11 +41,10 @@ class BorrowBookController extends Controller
 
  // var_dump ($borrowBooks . $listBooks);
  // die();
- return compact('borrowBooks','listGiveBacks');
+  return compact('borrowBooks','listGiveBacks');
 }
 
 public function getBorrowBook(){
-
   $employeess = employees::all()->toArray();
         //$borrowBooks = BorrowBooks::all()->toArray();
   $readers = readers::all()->toArray();

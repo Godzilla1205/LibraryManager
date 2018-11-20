@@ -32,21 +32,21 @@
 					</li>
 					<li class="nav-item @yield("menu-manager-book")">
 						<a class="nav-link" href="{{route('get.manager.book')}}">
-							<i class="fas fa-money-check"></i>
+							<i class="fas fa-book"></i>
 							<span class="hidden-sm-down">Quản lý sách</span>
 						</a>
 					</li>
 					<li class="nav-item @yield("menu-manager-readers")">
-						<a class="nav-link" href="{{route('get.manager.readers')}}"><i class="fa fa-object-group"></i><span>Quản lý độc giả</span></a>
+						<a class="nav-link" href="{{route('get.manager.readers')}}"><i class="fas fa-book-reader"></i><span>Quản lý độc giả</span></a>
 					</li>
 					<li class="nav-item @yield("menu-manager-publisher")">
-						<a class="nav-link" href="{{route('get.manager.publisher')}}"><i class="fa fa-object-group"></i><span>Quản lý nhà xuất bản</span></a>
+						<a class="nav-link" href="{{route('get.manager.publisher')}}"><i class="fas fa-user-tie"></i><span>Quản lý nhà xuất bản</span></a>
 					</li>
 					<li class="nav-item @yield("menu-borrowBook")">
-						<a class="nav-link" href="{{route('get.borrowBook')}}"><i class="fa fa-object-group"></i><span>Tạo phiếu mượn</span></a>
+						<a class="nav-link" href="{{route('get.borrowBook')}}"><i class="fas fa-edit"></i><span>Tạo phiếu mượn</span></a>
 					</li>
 					<li class="nav-item @yield("menu-payBook")">
-						<a class="nav-link" href="{{route('get.payBook')}}"><i class="fa fa-object-group"></i><span>Duyệt phiếu trả</span></a>
+						<a class="nav-link" href="{{route('get.payBook')}}"><i class="fas fa-clipboard-check"></i><span>Duyệt phiếu trả</span></a>
 					</li>
 					<li class="nav-item @yield("menu-manager-borrowGiveBack")">
 						<a href="#menu1" class="nav-link collapsed" data-toggle="collapse" aria-expanded=@section('booleanAria')"false"@show>
@@ -63,18 +63,20 @@
 						</li>
 					</div>
 					<li class="nav-item @yield("menu-manager-statistical")">
-						<a class="nav-link" href="{{route('get.manager.statistical')}}"><i class="fa fa-object-group"></i><span>Thống kê</span></a>
+						<a class="nav-link" href="{{route('get.manager.statistical')}}"><i class="fas fa-chart-bar"></i><span>Thống kê</span></a>
 					</li>
 				</ul>
 				<ul class="navbar-nav ml-auto">
+					@if(Auth::user()->level == 1) 
 					<li class="nav-item dropdown @yield("menu-admin")">
 						<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-3" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-globe"></i> Admin </a>
 						<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-3">
 							<a class="dropdown-item" href="{{route('get.manager.employees')}}">Quản lý nhân viên</a>
-							<a class="dropdown-item" href="#">Quản lý người dùng</a>
+							<a class="dropdown-item" href="{{route('get.manager.users')}}">Quản lý người dùng</a>
 						</a>
 					</div>
 				</li>
+				@endif
 				<li class="nav-item">
 					<a class="nav-link" href="#"><i class="fa fa-envelope"></i> Contact <span class="sr-only">(current)</span></a>
 				</li>
@@ -82,8 +84,8 @@
 				<li class="nav-item dropdown">
 					<a class="nav-link dropdown-toggle" id="navbarDropdownMenuLink-4" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"><i class="fa fa-user"></i> {{Auth::user()->name}} </a>
 					<div class="dropdown-menu dropdown-menu-right dropdown-cyan" aria-labelledby="navbarDropdownMenuLink-4">
-						<a class="dropdown-item" href="user.html">My account</a>
-						<a class="dropdown-item" href="login">logout</a>
+						<a class="dropdown-item" href="{{route('get.user')}}">My account</a>
+						<a class="dropdown-item" href="{{route('get.logout')}}">logout</a>
 					</div>
 				</li>
 				@endif

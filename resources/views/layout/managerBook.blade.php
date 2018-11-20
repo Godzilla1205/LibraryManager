@@ -87,7 +87,7 @@ sl-active
                   <td>{{$book->giaTien}}</td>
                   <td class="action-button">
                     <a class="btn btn-primary" href="{{action('BookController@getManagerBook_Edit',$book->id)}}"><i class="fa fa-edit"></i></a>
-                    <a class="btn btn-danger" href="{{action('BookController@getManagerBook_Delete',$book->id)}}"><i class="fa fa-trash"></i></a>
+                    <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" href="{{action('BookController@getManagerBook_Delete',$book->id)}}"><i class="fa fa-trash"></i></a>
                   </td>
                 </tr>
                 @endforeach

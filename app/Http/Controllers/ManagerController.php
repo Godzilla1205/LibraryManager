@@ -13,6 +13,8 @@ class ManagerController extends Controller
 {
 	public function getManager(){
 		$borrowBooks = BorrowBooks::all()->toArray();
+
+
 		$payBooks = DB::select('select soPhieuMuon, ngayTra, Count(*) from pay_books Group By soPhieuMuon,ngayTra');	
 
 

@@ -32,10 +32,11 @@ sl-active
     <br/>  
     <div class="container">
       <div class="row">
-        <div class="col-md-5">
+        <div class="col-md-12">
           @if ($errors->any())
-          <div class="alert alert-danger">
-            <ul>
+          <div class="alert alert-danger alert-dismissible">
+            <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+             <ul>
               @foreach ($errors->all() as $error)
               <li>{{ $error }}</li>
               @endforeach
@@ -43,13 +44,14 @@ sl-active
           </div><br />
           @endif
           @if (Session::has('success'))
-          <div class="alert alert-success">
-            <p>{{ Session::get('success') }}</p>
-          </div><br />
+          <div class="alert alert-success alert-dismissible">
+            <a href="javascript:void(0)" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+            <strong>Success!</strong> {{ Session::get('success') }}
+          </div>
           @endif
         </div>
       </div>
-    </div>
+    </div> 
     <form action="{{route('post.manager.readers.add')}}" method="POST" class="form-horizontal" role="form">
       @method('post')
       @csrf

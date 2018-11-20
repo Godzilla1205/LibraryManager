@@ -33,10 +33,10 @@ class PayBookController extends Controller
 			if(count($detailBorrows) > 0) {
 				return view('layout.PayBookContent',compact('detailBorrows','employees','maSoDG'));
 			}else {
-				return redirect("PayBook")->with('success', 'Độc giả này đã trả hết sách !!!');;
+				return redirect("manager/GiveBack/create")->with('success', 'Độc giả này đã trả hết sách !!!');;
 			}
 		}else {
-			return back()->withErrors('Các cụ bảo là mã độc giả không tồn tại !!!');
+			return back()->withErrors('Mã độc giả không tồn tại !!!');
 		}
 	}
 
@@ -68,7 +68,7 @@ class PayBookController extends Controller
 		DB::update('update books set soLuong = (soLuong + 1) where id = :id', ['id' => $request->maSoSach]);
 
 
-		return redirect("PayBook/$maSoDG")->with('success', 'Trả sách thành công !!!');;
+		return redirect("manager/GiveBack/create/$maSoDG")->with('success', 'Trả sách thành công !!!');;
 	} 
 	public function getPayBookHeader() {
 		$employees = employees::all()->toArray();

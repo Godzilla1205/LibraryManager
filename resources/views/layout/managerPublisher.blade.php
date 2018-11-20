@@ -80,7 +80,7 @@ sl-active
               <td>{{$publisher['thongTinKhacNXB']}}</td>
               <td class="action-button">
                 <a class="btn btn-primary" href="{{action('PublisherController@getManagerPublisher_Edit',$publisher['id'])}}"><i class="fa fa-edit"></i></a>
-                <a class="btn btn-danger" href="{{action('PublisherController@getManagerPublisher_Delete',$publisher['id'])}}"><i class="fa fa-trash"></i></a>
+                <a class="btn btn-danger" onclick="return confirm('Are you sure you want to delete this item?');" href="{{action('PublisherController@getManagerPublisher_Delete',$publisher['id'])}}"><i class="fa fa-trash"></i></a>
               </td>
             </tr>
           @endforeach

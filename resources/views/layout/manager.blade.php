@@ -7,7 +7,7 @@
 			<div class="card">
 				<div class="d-flex align-items-center">
 					<div class="display-4 text-success">
-						<i class="fas fa-shopping-cart"></i>
+						<i class="far fa-bookmark"></i>
 					</div>
 					<div class="ml-3">
 						<div class="text-muted small">Phiếu mượn trong ngày</div>
@@ -20,7 +20,7 @@
 			<div class="card">
 				<div class="d-flex align-items-center">
 					<div class="display-4 text-success">
-						<i class="fa fa-globe"></i>
+						<i class="fas fa-check"></i>
 					</div>
 					<div class="ml-3">
 						<div class="text-muted small">Phiếu trả trong ngày</div>
@@ -33,7 +33,7 @@
 			<div class="card">
 				<div class="d-flex align-items-center">
 					<div class="display-4 text-success">
-						<i class="fas fa-flask"></i>
+						<i class="fas fa-user-times"></i>
 					</div>
 					<div class="ml-3">
 						<div class="text-muted small">Phiếu trễ hẹn</div>

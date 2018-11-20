@@ -13,18 +13,18 @@ class LoginController extends Controller
 	public function getAdminLogin() {
 		return view('login');
 	}
-
+	public function getAdminLogout() {
+		Auth::logout();
+		return view('login');
+	}
+	
 	public function postAdminLogin(Request $request) {
 		$this->validate($request, [
-			'email' => 'required',
-			'password' => 'required|min:3|max:32'
-		], [
-			'email.required' => 'Ban chua nhap Email',
-			'password.required' => 'Ban chua nhap Password',
-			'password.min' => 'Password khong duoc nho hon 3 ky tu',
-			'password.max' => 'Password khong duoc lon hon 32 ky tu'
+			'username' => 'required',
+			'password' => 'required|min:3|max:32',
+			'level' => 'numeric'
 		]);
-		$array = ['email'=>$request->email,'password'=>$request->password];
+		$array = ['username'=>$request->username,'password'=>$request->password];
 		if(Auth::attempt($array)){
 			return redirect('manager');
 		} else {

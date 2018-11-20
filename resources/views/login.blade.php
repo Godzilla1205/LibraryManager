@@ -23,10 +23,10 @@
           <form action="{{action('LoginController@postAdminLogin')}}" method="POST" class="form-horizontal" role="form">
             @method('post')
             @csrf
-            <h2 class="text-center">Admin login</h2>
+            <h2 class="text-center">Login Library</h2>
             <div class="form-group">
               <label class="text-uppercase">Username</label>
-              <input type="text" class="form-control" id="userName" value="a@Gmail.com" name="email" placeholder="">
+              <input type="text" class="form-control" id="userName" value="godzilla1205" name="username" placeholder="">
             </div>
             <div class="form-group">
               <label class="text-uppercase">Password</label>
@@ -42,7 +42,7 @@
           </form>
         </div>
         <div class="col-md-8 banner-sec">
-          <img class="d-block img-fluid" src="{{asset('images/06.jpg')}}" alt="First slide">
+          <img class="d-block img-fluid" src="{{asset('images/thu_vien_5.jpg')}}" alt="First slide">
         </div>
       </div>
     </section>

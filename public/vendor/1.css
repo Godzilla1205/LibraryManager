@@ -44,20 +44,21 @@
 }
 
 img.d-block.img-fluid {
-    margin-top: 19px;
+  height: 100%;
+  border-radius: 0px 9px 9px 0px;
 }
 @media (min-width: 1100px){
   .login-block .container {
     max-width: 900px;
-}
+  }
 }
 
 .red #userName,.red #passWord {
-    border-color: red;
+  border-color: red;
 }
 
 .fail #userName,.fail #passWord {
-    animation: animate1 0.2s forwards;
+  animation: animate1 0.2s forwards;
 }
 
 

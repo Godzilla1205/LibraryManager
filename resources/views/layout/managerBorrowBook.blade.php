@@ -171,7 +171,7 @@ sm-active
       $('#show').modal('show');
       var id = $(this).data('id');
       $.ajax({ 
-        url: app_url+'manager/BorrowBook/'+id,
+        url: app_url+'manager/BorrowBook/detail/'+id,
         type: 'get',
         success:function(reponse){
           listGiveBacks = reponse['listGiveBacks'];
