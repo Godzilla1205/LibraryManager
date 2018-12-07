@@ -84,7 +84,7 @@ class BookController extends Controller
        //      $fileName = $file->getClientOriginalName('fileAvatar');
        //      $file->move('images/books', $fileName);
        // } else {}
-     return back()->with('success', 'Publisher has been added');
+     return back()->with('success', 'Thêm sách thành công !!!');
  }
  public function getManagerBook_Edit($id){
   $book = book::find($id);
@@ -148,7 +148,7 @@ public function postManagerBook_Edit(Request $request, $id){
        // } else {
        //  echo "khong co file";
        //  die();}
-    return redirect("manager/Book/Edit/$id")->with('success','Publisher has been updated');
+    return redirect("manager/Book/Edit/$id")->with('success','Publi has been updated');
 }
 
 public function getManagerBook_Delete($id){
